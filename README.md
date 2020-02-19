@@ -57,10 +57,8 @@ Events:
 - end time
 - Status - {Running, Completed, Cancelled, Upcoming}
      
-** Separate Modules to be integrated later **
-IF YOU HAD INVESTED
-CURRENCY CONVERTER(FOREX)
-FIND BROKER
+* Separate Modules to be integrated later
+* IF YOU HAD INVESTED CURRENCY CONVERTER(FOREX) FIND BROKER
 
 <!-- ## models
 - User
