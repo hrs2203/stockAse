@@ -1,0 +1,72 @@
+{% extends './header.html' %}
+
+{% block title %} homepage {% endblock %}
+
+{% block customStyle %}
+	<!-- 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	 -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" ></script>
+
+{% endblock %}
+
+{% block content %}
+
+	<section>
+
+		<div class='container text-center'>
+			<h1 class='align-self-center m-5'>A opening Graph</h1>
+		</div>
+
+		<div class="container text-right">
+			<button id="clickChange" class='btn btn-outline-success align-self-center ' onclick="genLine();console.log('click')">New value</button>
+		</div>
+
+		<div style="border: 1px solid white ;width : 100%;">
+			<canvas id="myChart">
+			</canvas>
+		</div>
+
+		<script type="text/javascript">
+		var genLine = () => $.ajax({
+				type: "get",
+				url: 'sample/test_data',
+				success: (response) => {
+					// console.log(response)
+					var ctx = document.getElementById('myChart').getContext('2d');
+					var myChart = new Chart(ctx, {
+						type: 'line',
+						data: {
+							labels: response.x_axis,
+							datasets: [{
+								label: 'opening -> ',
+								data: response.y_axis ,
+								backgroundColor: 'rgba(0,0,0,0)',
+								borderColor: 'rgba(0,125,255,1)',
+								borderWidth: 1
+							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero: true
+									}
+								}]
+							}
+						}
+					});
+				}
+			})
+
+		
+		// initial load values
+		genLine()
+
+		</script>
+	</section>
+
+{% endblock %}

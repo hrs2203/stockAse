@@ -35,7 +35,26 @@
 - Alpha Vantage
   - limitation, 5 req per min, 500 per day
 
-## Processes
 
+## Features
+- TOP GAINERS
+- TOP LOSERS
+- TOP ACTIVE
 
-## Work Distribution
+- GLOBAL INDICES
+  - WEEKLY, MONTHLY DAILY
+
+- EVENTS: (ONLY COMPANIES CAN CREATE)
+
+- COMPANY:
+
+- USER:
+  -PORTFOLIO
+  -WATCHLIST
+  -FRIENDS/CONNECTIONS
+  -CHATBOX
+  
+-EXTRA FEATURES:
+  -IF YOU HAD INVESTED
+  -CURRENCY CONVERTER(FOREX)
+  -FIND BROKER  
