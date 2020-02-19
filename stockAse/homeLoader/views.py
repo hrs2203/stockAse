@@ -19,13 +19,18 @@ def send_testGraphData(request):
 	# print(temp.get("Meta Data"))
 	stockData = temp.get("Time Series (5min)")
 	# print(stockData)
-	countLim = 10;
+	countLim = 10
 	xData = list(stockData.keys())
-	print(xData[:countLim])
+	
+	xTime = []
+	for i in xData:
+		xTime.append(i.split()[1])
+
+	# print(xData[:countLim])
 	yData = []
 	for i in xData:
-		yData.append(stockData.get(i).get("1. open"))
-	print(yData)
+		yData.append(float(stockData.get(i).get("1. open")))
+	print(yData[:10])
 
 	# l = random.randint(1,30)
 	# x = []
@@ -33,7 +38,8 @@ def send_testGraphData(request):
 	# for i in range(l):
 	# 	x.append(random.randint(1,5))
 	# 	y.append(x[-1]**2)
+
 	return JsonResponse({
-		"x_axis" : xData[:10],
+		"x_axis" : xTime[:10],
 		"y_axis" : yData[:10]
 	})

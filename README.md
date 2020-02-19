@@ -1,6 +1,68 @@
 # DB schema
 
-## models
+## new schema
+
+User:
+- Username(PK)
+- Password 
+- Name
+- Phone(Unique)
+- Email(Unique)
+- Balance
+- Photo
+     
+Watchlist:
+- Username(FK)
+- Company_id(FK)
+
+Connections:
+- Follower(Username(FK))
+- Following(Username(FK))
+
+transaction:
+- transaction_id(PK)
+- seller(Username(FK))
+- buyer(Username(FK))
+- status - {PENDING, SUCCESS, FAILED, CANCELLED}
+- company_id(FK)
+- cost price(i.e. selling price at that instance)
+- number of shares
+- time
+
+Shares:
+- Comapany_id(FK)
+- Username(FK)
+- Number of shares acquired
+- Number of shares on sale
+
+Company:
+- Company_id(PK)
+- name
+- Owner(Username)(FK)
+- Description
+- Selling price
+- *fit stats obtained by api*
+
+Register_Event:(Performed by user)
+- Username(FK)
+- Event_id(FK)
+- status - {Registered, Not Registered}
+
+Events:
+- Company_id(FK)
+- Event_id(PK)
+- name
+- place
+- start time
+- end time
+- Status - {Running, Completed, Cancelled, Upcoming}
+     
+** Separate Modules to be integrated later **
+IF YOU HAD INVESTED
+CURRENCY CONVERTER(FOREX)
+FIND BROKER
+
+<!-- ## models
 - User
   - user ID
   - User name
@@ -26,7 +88,7 @@
   - stores stock that are for sale
   - stock company name
   - stock qty avail for sale
-  - unit stock price
+  - unit stock price -->
 
 
 ## Stock API used
