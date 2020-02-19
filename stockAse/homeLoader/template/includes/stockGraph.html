@@ -1,53 +1,95 @@
-
+<!-- linear graph module -->
 <section>
-
 		<div class='container text-center'>
 			<h1 class='align-self-center m-5'>A opening Graph</h1>
 		</div>
 
-		<div style="border: 1px solid black; border-radius: 5px ; padding: 5% ; width : 100%;">
-			<canvas id="myChart">
-			</canvas>
-			<div class="container text-right">
-				<button id="clickChange" class='btn btn-outline-success align-self-center' style="margin-top: 20px" onclick="genLine();console.log('click')">New value</button>
+		<div class="row">
+			<div class='col m-2' style="border: 1px solid black; border-radius: 5px ; padding: 3%;">
+				<canvas class='col' id="myChart">
+				</canvas>
+				<div class="container text-right">
+					<button id="clickChange" class='btn btn-outline-success align-self-center' style="margin-top: 20px" onclick="genLine();console.log('click')">New value</button>
+				</div>
+			</div>
+			<div class='col m-2' style="border: 1px solid black; border-radius: 5px ; padding: 3%;">
+				<canvas class='col' id="myChart2">
+				</canvas>
+				<div class="container text-right">
+					<button id="clickChange" class='btn btn-outline-success align-self-center' style="margin-top: 20px" onclick="genLine2();console.log('click')">New value</button>
+				</div>
 			</div>
 		</div>
+		
 
 		<script type="text/javascript">
 		var genLine = () => $.ajax({
-				type: "get",
-				url: 'sample/test_data',
-				success: (response) => {
-					// console.log(response)
-					var ctx = document.getElementById('myChart').getContext('2d');
-					var myChart = new Chart(ctx, {
-						type: 'line',
-						data: {
-							labels: response.x_axis,
-							datasets: [{
-								label: 'opening -> ',
-								data: response.y_axis ,
-								backgroundColor: 'rgba(0,0,0,0)',
-								borderColor: 'rgba(0,125,255,1)',
-								borderWidth: 1
+			type: "get",
+			url: 'sample/test_data',
+			success: (response) => {
+				// console.log(response)
+				var ctx = document.getElementById('myChart').getContext('2d');
+				var myChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: response.x_axis,
+						datasets: [{
+							label: 'opening -> ',
+							data: response.y_axis ,
+							backgroundColor: 'rgba(0,0,0,0)',
+							borderColor: 'rgba(0,125,255,1)',
+							borderWidth: 1
+						}]
+					},
+					options: {
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: true
+								}
 							}]
-						},
-						options: {
-							scales: {
-								yAxes: [{
-									ticks: {
-										beginAtZero: true
-									}
-								}]
-							}
 						}
-					});
-				}
-			})
+					}
+				});
+			}
+		})
+		
+		var genLine2 = () => $.ajax({
+			type: "get",
+			url: 'sample/test_data',
+			success: (response) => {
+				// console.log(response)
+				var ctx = document.getElementById('myChart2').getContext('2d');
+				var myChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: response.x_axis,
+						datasets: [{
+							label: 'opening -> ',
+							data: response.y_axis ,
+							backgroundColor: 'rgba(0,0,0,0)',
+							borderColor: 'rgba(0,125,255,1)',
+							borderWidth: 1
+						}]
+					},
+					options: {
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: true
+								}
+							}]
+						}
+					}
+				});
+			}
+		})
 
 		
 		// initial load values
 		genLine()
+		genLine2()
+		
 
 		</script>
 	</section>
