@@ -12,7 +12,10 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" ></script>
 
-	<style>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_homepage.css' %}">
+
+	<!-- <style>
 		.sideBar {
 			border: 1px solid black;
 			height: 800px;
@@ -22,17 +25,20 @@
 			border: 1px solid black;
 		}
 		
-	</style>
+	</style> -->
 
 {% endblock %}
 
 {% block content %}
+	<header>
+		{% include "includes/nav.html" %}
+	</header>
 	
-	<div class="row mt-2">
-		<div class="col-2 m-2 sideBar">
+	<div class="row mt-2 ml-1 mr-1">
+		<div class="col-3 mt-2 sideBar">
 			{% include "includes/sideBar.html" %}
 		</div>
-		<div class="col-9 m-2 contentBody">
+		<div class="col m-2 contentBody">
 			{% include "includes/stockGraph.html" %}
 		</div>
 	</div>
