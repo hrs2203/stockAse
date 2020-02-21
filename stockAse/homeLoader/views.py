@@ -42,8 +42,14 @@ def send_testGraphData(request):
 
 	# print(xData[:countLim])
 	yData = []
+	y2Data = []
+	y3Data = []
+	
 	for i in xData:
 		yData.append(float(stockData.get(i).get("1. open")))
+		y2Data.append(float(stockData.get(i).get("2. high")))
+		y3Data.append(float(stockData.get(i).get("3. low")))
+			
 	print(yData[:10])
 
 	# l = random.randint(1,30)
@@ -55,5 +61,7 @@ def send_testGraphData(request):
 
 	return JsonResponse({
 		"x_axis" : xTime[:10],
-		"y_axis" : yData[:10]
+		"y_axis" : yData[:10],
+		"y2_axis": y2Data[:10],
+		"y3_axis": y3Data[:10],
 	})
