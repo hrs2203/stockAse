@@ -11,6 +11,20 @@ def welcomePage(request):
 		context = {}
 	)
 
+def companyPage(request):
+	return render(
+		request = request,
+		template_name = 'company.html',
+		context = {}
+	)
+
+def userPage(request):
+	return render(
+		request = request,
+		template_name = 'userDetail.html',
+		context = {}
+	)
+
 def send_testGraphData(request):
 
 	url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=demo"
