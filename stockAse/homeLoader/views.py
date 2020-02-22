@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 
-from .models import CustomUser
-from .forms import CustomUserCreationForm
+from .models import CustomUser, Company, Shares
+from .forms import CustomUserCreationForm, CompanyRegistrationForm
 
 # Create your views here.
 
@@ -29,23 +29,36 @@ def companyPage(request):
     )
 
 
+def newCompany(request):
+    if request.method == 'POST':
+        form = CompanyRegistrationForm(request.POST)
+        if form.is_valid():
+            company = form.save(commit=False)
+            company.owner = request.user
+            company.save()
+
+            return redirect('user')
+
+    form = CompanyRegistrationForm()
+    return render(request, 'registration/company.html', {"form": form})
+
+
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        print("in_post")
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            print("saved")
             return redirect('account/login')
     form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {"form": form})
 
 
 def log_out(request):
-    logout(request)
-    messages.success(request, "Logged out successfully!")
+    if request.user.is_authenticated:
+        logout(request)
+        messages.success(request, "Logged out successfully!")
     return redirect('/account/login')
 
 
