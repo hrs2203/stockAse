@@ -8,19 +8,36 @@ var genLine = () => $.ajax({
             type: 'line',
             data: {
                 labels: response.x_axis,
-                datasets: [{
-                    label: 'opening -> ',
-                    data: response.y_axis ,
-                    backgroundColor: 'rgba(0,0,0,0)',
-                    borderColor: 'rgba(0,125,255,1)',
-                    borderWidth: 1
-                }]
+                datasets: [
+                    {
+                        label: 'opening -> ',
+                        data: response.y_axis ,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderColor: 'rgba(0,125,255,1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'high -> ',
+                        data: response.y2_axis ,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderColor: 'rgba(0,0,255,1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'low -> ',
+                        data: response.y3_axis ,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderColor: 'rgba(250,0,0,1)',
+                        borderWidth: 1
+                    }
+                ]
             },
             options: {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            min: (Math.min(...response.y3_axis)),
+                            max: Math.floor(Math.max(...response.y_axis)+1)
                         }
                     }]
                 }
@@ -39,19 +56,36 @@ var genLine2 = () => $.ajax({
             type: 'line',
             data: {
                 labels: response.x_axis,
-                datasets: [{
-                    label: 'opening -> ',
-                    data: response.y_axis ,
-                    backgroundColor: 'rgba(0,0,0,0)',
-                    borderColor: 'rgba(0,125,255,1)',
-                    borderWidth: 1
-                }]
+                datasets: [
+                    {
+                        label: 'opening -> ',
+                        data: response.y_axis ,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderColor: 'rgba(0,125,255,1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'high -> ',
+                        data: response.y2_axis ,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderColor: 'rgba(0,0,255,1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'low -> ',
+                        data: response.y3_axis ,
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        borderColor: 'rgba(250,0,0,1)',
+                        borderWidth: 1
+                    }
+                ]
             },
             options: {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            min: (Math.min(...response.y3_axis)),
+                            max: Math.floor(Math.max(...response.y_axis)+1)
                         }
                     }]
                 }
