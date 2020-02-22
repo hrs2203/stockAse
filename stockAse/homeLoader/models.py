@@ -20,36 +20,54 @@ class CustomUser(AbstractUser):
     watch_list = models.ManyToManyField(
         'Company', related_name='is_interested_in')
     balance = models.DecimalField(
-        max_digits=10, decimal_places=2, default=1000)
+        max_digits=10, decimal_places=2, default=1000, verbose_name="Balance Amount")
     photo = models.ImageField(null=True, blank=True,
-                              upload_to="profile_photos/")
+                              upload_to="profile_photos/", verbose_name="Profile Photo")
 
     def __str__(self):
         return self.email
 
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
 
 class Company(models.Model):
     company_id = models.CharField(
-        max_length=50, primary_key=True, unique=True, default=uuid.uuid4)
-    company_name = models.CharField(max_length=50, blank=False, unique=False)
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    description = models.CharField(max_length=200, blank=True)
-    selling_price = models.DecimalField(max_digits=10, decimal_places=2)
+        max_length=50, primary_key=True, unique=True, default=uuid.uuid4, verbose_name="ID")
+    company_name = models.CharField(
+        max_length=50, blank=False, unique=False, verbose_name="Name")
+    owner = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, verbose_name="Owner")
+    description = models.CharField(
+        max_length=200, blank=True, verbose_name="Description")
+    selling_price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name="Price")
 
     def __str__(self):
         return self.company_name
+
+    class Meta:
+        verbose_name = 'Company'
+        verbose_name_plural = 'Companies'
 
 
 class Shares(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    shares_count = models.IntegerField(blank=False)
-    shares_sale = models.IntegerField(default=0)
+    shares_count = models.IntegerField(
+        blank=False, verbose_name="Number of shares acuired")
+    shares_sale = models.IntegerField(
+        default=0, verbose_name="Number of shares on sale")
+
+    class Meta:
+        verbose_name = 'Share'
+        verbose_name_plural = 'Shares'
 
 
 class Transaction(models.Model):
     transaction_id = models.CharField(
-        max_length=50, primary_key=True, unique=True, default=uuid.uuid4)
+        max_length=50, primary_key=True, unique=True, default=uuid.uuid4, verbose_name="ID")
     seller = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='Seller')
     buyer = models.ForeignKey(
@@ -57,8 +75,13 @@ class Transaction(models.Model):
     status = models.CharField(max_length=50, blank=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
-    shares_count = models.IntegerField(blank=False)
+    shares_count = models.IntegerField(
+        blank=False, verbose_name="Number of shares")
     time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Transaction'
+        verbose_name_plural = 'Transactions'
 
 
 class Events(models.Model):
@@ -70,3 +93,7 @@ class Events(models.Model):
     start_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     duration = models.DateTimeField(auto_now=False, auto_now_add=False)
     status = models.CharField(max_length=50, blank=False)
+
+    class Meta:
+        verbose_name = 'Event'
+        verbose_name_plural = 'Events'
