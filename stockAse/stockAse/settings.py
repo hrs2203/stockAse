@@ -31,14 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'homeLoader',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'homeLoader'
 ]
 
 MIDDLEWARE = [
@@ -70,6 +69,8 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_REDIRECT_URL = '/user'
 
 WSGI_APPLICATION = 'stockAse.wsgi.application'
 

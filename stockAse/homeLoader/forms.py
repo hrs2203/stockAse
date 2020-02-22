@@ -5,13 +5,19 @@ from .models import CustomUser
 
 class CustomUserCreationForm(UserCreationForm):
 
+    first_name = forms.CharField(max_length=100, required=True)
+    last_name = forms.CharField(max_length=100, required=True)
+
     class Meta:
         model = CustomUser
-        fields = ('email',)
+        fields = ('first_name', 'last_name', 'email',)
 
 
 class CustomUserChangeForm(UserChangeForm):
 
+    first_name = forms.CharField(max_length=100, required=True)
+    last_name = forms.CharField(max_length=100, required=True)
+
     class Meta:
         model = CustomUser
-        fields = ('email',)
+        fields = ('first_name', 'last_name', 'email',)

@@ -1,0 +1,22 @@
+{% extends '../header.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+	<header>
+		{% include "includes/nav.html" %}
+	</header>
+
+    {% if form.errors %}
+      <p>{{ form.errors }}</p>
+    {% endif %}
+
+    <h2>Sign up</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+    <button type="submit">Sign up</button>
+    </form>
+    </div>
+	
+{% endblock %}

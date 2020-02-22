@@ -8,13 +8,16 @@ from .manager import CustomUserManager
 
 class CustomUser(AbstractUser):
     username = None
-    email = models.EmailField(_('email_field'), unique=True)
+    email = models.EmailField(
+        _('email_field'), unique=True, blank=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     following = models.ManyToManyField(
         'self', related_name='follows')
     watch_list = models.ManyToManyField(
@@ -54,7 +57,8 @@ class Company(models.Model):
 
 class Shares(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE)
     shares_count = models.IntegerField(
         blank=False, verbose_name="Number of shares acuired")
     shares_sale = models.IntegerField(
