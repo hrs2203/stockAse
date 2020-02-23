@@ -2,6 +2,13 @@
 
 {% block title %} NEW {% endblock %}
 
+{% block customStyle %}
+
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_form.css' %}">
+
+{% endblock %}
+
 {% block content %}
 	<header>
 		{% include "includes/nav.html" %}
@@ -13,18 +20,23 @@
         {% endfor %}
     </div>
 
-    <div class='test'>
-        {% if form.errors %}
-            <p>Some error occured</p>
-        {% endif %}
+    {% if form.errors %}
+        <p>Some error occured</p>
+    {% endif %}
 
-        <form method="post" action="{% url 'new_company' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="register" />
-            <input type="hidden" name="next" value="{{ next }}" />
-        </form>
-
+    <h2>Register Your Company</h2>
+    <div class="form_input">
+      <form method="post" action="{% url 'new_company' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_fieldName }}">{{ field.label }}</label>
+                <input type="{{ field.field.widget.input_type }}" placeholder="{{ field.help_text }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control">
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" value="register">Register</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
     </div>
 	
 {% endblock %}

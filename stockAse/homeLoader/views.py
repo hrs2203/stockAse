@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views import generic
 
 from .models import CustomUser, Company, Shares
-from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanySharesUpdateForm
+from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanySharesUpdateForm, SharesSaleUpdateForm
 
 
 def welcomePage(request):
@@ -58,12 +58,29 @@ def signup(request):
     return render(request, 'registration/signup.html', {"form": form})
 
 
-@login_required
 def log_out(request):
     if request.user.is_authenticated:
         logout(request)
         messages.success(request, "Logged out successfully!")
+    else:
+        messages.warning(request, "You Are not Logged in")
     return redirect('/accounts/login')
+
+
+@login_required
+def market(request):
+    return MarketView.as_view()(request)
+
+
+class MarketView(generic.ListView):
+    model = Shares
+    context_object_name = 'market_list'
+    template_name = "market.html"
+
+    def get_queryset(self):
+        shr = Shares.objects.exclude(
+            user=self.request.user).filter(shares_sale__gte=1)
+        return shr
 
 
 @login_required
@@ -85,17 +102,19 @@ def editCompanyShares(request, id):
     if form.is_valid():
         form.save(commit=True)
         return redirect(myCompanies)
-    return render(request, 'registration/gen_form.html', {"form": form, "head": 'Edit Company Shares'})
+    return render(request, 'registration/gen_form.html', {"form": form, "head": 'Edit Company Shares', "redirect": 'edit_shares'})
 
 
 @login_required
-def editMyShares(request, id):
+def sellMyShares(request, id):
     obj = get_object_or_404(Shares, id=id)
-    form = CompanySharesUpdateForm(request.POST or None, instance=obj)
+    form = SharesSaleUpdateForm(request.POST or None, instance=obj)
+    print("dssfa")
+    print(form.is_valid())
     if form.is_valid():
         form.save(commit=True)
-        return redirect(myCompanies)
-    return render(request, 'registration/gen_form.html', {"form": form, "head": 'Edit Company Shares'})
+        return redirect(myShares)
+    return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})
 
 
 @login_required

@@ -1,6 +1,6 @@
 {% extends './header.html' %}
 
-{% block title %} My Shares {% endblock %}
+{% block title %} Market {% endblock %}
 
 {% block customStyle %}
 
@@ -13,9 +13,8 @@
 	<header>
 		{% include "includes/nav.html" %}
     </header>
-    
-    <h2>My Shares</h2>
-    {% if my_shares_list %}
+    <h2>Market</h2>
+    {% if market_list %}
     <table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -26,15 +25,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for share in my_shares_list %}
+            {% for share in market_list %}
             <tr>
                 <td class="comp">{{ share.company.company_name }}</td>
                 <td>{{ share.shares_count }}</td> 
                 <td>{{ share.shares_sale }}</td>
                 <td>
-                    <form method="GET" action="{% url 'sell_shares' share.id %}">
+                    <form method="GET" action="#">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">Sell</button>
+                        <button type="submit" class="btn btn-primary">Buy</button>
                     </form>
                 </td>
             </tr>
@@ -42,9 +41,8 @@
         </tbody>
     </table>
     {% else %}
-        <p><marquee>Times ticking!!! Buy a new Share</marquee></p>
+        <p><marquee>Sorry! No Shares Available. Come back later.</marquee></p>
     {% endif %}
-    
 
 	
-{% endblock %}
+{% endblock %} 

@@ -25,8 +25,12 @@ class CustomUserChangeForm(UserChangeForm):
 
 class CompanyRegistrationForm(forms.ModelForm):
 
-    company_name = forms.CharField(max_length=100, required=True)
-    description = forms.CharField(max_length=200, required=True)
+    company_name = forms.CharField(
+        max_length=100, required=True, help_text="Company Name", widget=forms.TextInput(attrs={'type': 'text'}))
+    description = forms.CharField(
+        max_length=200, required=True, help_text="Description", widget=forms.TextInput(attrs={'type': 'text'}))
+    selling_price = forms.DecimalField(
+        required=True, help_text="Rs.", widget=forms.NumberInput(attrs={'type': 'number'}))
 
     class Meta:
         model = Company
@@ -40,7 +44,7 @@ class CompanySharesUpdateForm(forms.ModelForm):
         fields = ('shares_count',)
 
 
-class SharesSellUpdateForm(forms.ModelForm):
+class SharesSaleUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Shares

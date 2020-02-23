@@ -60,7 +60,7 @@ class Shares(models.Model):
     user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE)
     shares_count = models.IntegerField(
-        blank=False, verbose_name="Number of shares acuired")
+        blank=False, verbose_name="Number of shares acquired")
     shares_sale = models.IntegerField(
         default=0, verbose_name="Number of shares on sale")
 

@@ -10,6 +10,8 @@ urlpatterns = [
     path('company', views.companyPage),
     path('company/new', views.newCompany, name='new_company'),
     path('company/shares/<int:id>', views.editCompanyShares, name='edit_shares'),
+    path('user/shares/<int:id>', views.sellMyShares, name='sell_shares'),
+    path('market', views.market, name='market'),
     path('shares', views.myShares, name='view_shares'),
     path('user', views.userPage, name='user'),
     path('accounts/', include('django.contrib.auth.urls')),
