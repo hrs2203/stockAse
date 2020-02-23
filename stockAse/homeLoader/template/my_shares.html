@@ -1,0 +1,38 @@
+{% extends './header.html' %}
+
+{% block title %} My Shares {% endblock %}
+
+{% block customStyle %}
+
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_company.css' %}">
+
+{% endblock %}
+
+{% block content %}
+	<header>
+		{% include "includes/nav.html" %}
+    </header>
+    <div class='test'>
+        <h2>My Shares</h2>
+        {% if my_shares_list %}
+            <ul>
+                {% for share in my_shares_list %}
+                    <li>
+                        <p>Company name - {{ share.company.company_name }}</p>
+                        <p>Shares Count - {{ share.shares_count }}</p> 
+                        <p>Shares On Sale - {{ share.shares_sale }}</p>
+                        <form method="GET" action="{% url 'edit_shares' share.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Sell</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Times ticking!!! Buy a new Share</p>
+        {% endif %}
+    </div>
+
+	
+{% endblock %}
