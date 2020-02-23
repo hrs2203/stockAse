@@ -41,6 +41,9 @@ def newCompany(request):
                 company=company, user=request.user, shares_count=0)
             create_share.save()
             return redirect(myCompanies)
+        else:
+            print("not valid")
+            return render(request, 'registration/company.html', {"form": form})
 
     form = CompanyRegistrationForm()
     return render(request, 'registration/company.html', {"form": form})
@@ -53,7 +56,12 @@ def signup(request):
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
+            messages.success(
+                request, "Account Created Successfully. Login and start earning!")
             return redirect('accounts/login')
+        else:
+            print("not valid")
+            return render(request, 'registration/signup.html', {"form": form})
     form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {"form": form})
 
@@ -102,16 +110,19 @@ def editCompanyShares(request, id):
     if form.is_valid():
         form.save(commit=True)
         return redirect(myCompanies)
-    return render(request, 'registration/gen_form.html', {"form": form, "head": 'Edit Company Shares', "redirect": 'edit_shares'})
+    return render(request, 'registration/gen_form.html', {"form": form, "head": 'Edit Company Shares', "redirect": 'edit_shares', "id": id})
 
 
 @login_required
 def sellMyShares(request, id):
     obj = get_object_or_404(Shares, id=id)
     form = SharesSaleUpdateForm(request.POST or None, instance=obj)
-    print("dssfa")
-    print(form.is_valid())
     if form.is_valid():
+        print(obj.shares_sale)
+        if obj.shares_count < obj.shares_sale:
+            messages.info(request, "Your currently own {} shares. The sale value cannot exceed it".format(
+                obj.shares_count))
+            return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})
         form.save(commit=True)
         return redirect(myShares)
     return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})

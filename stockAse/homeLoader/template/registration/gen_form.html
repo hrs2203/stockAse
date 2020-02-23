@@ -10,15 +10,6 @@
 {% endblock %}
 
 {% block content %}
-	<header>
-		{% include "includes/nav.html" %}
-	</header>
-
-    <div class='messages'>
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </div>
 
     <h2>{{ head }}</h2>
     <div class="form_input">

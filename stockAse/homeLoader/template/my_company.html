@@ -10,10 +10,6 @@
 {% endblock %}
 
 {% block content %}
-	<header>
-		{% include "includes/nav.html" %}
-    </header>
-
     <h2>My Company Shares</h2>
     {% if my_companies_list %}
         <table class="table table-striped table-hover">
@@ -33,18 +29,14 @@
                     <td>{{ company.shares_sale }}</td>
                     <td>
                         <div class="row">
-                            <div class="btnSpace">
-                                <form method="GET" action="{% url 'edit_shares' company.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary mx-2">Edit</button>
-                                </form>
-                            </div>
-                            <div class="btnSpace">
-                                <form method="GET" action="{% url 'sell_shares' company.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary mx-2">Sell</button>
-                                </form>
-                            </div>
+                            <form method="GET" action="{% url 'edit_shares' company.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary mx-2">Edit</button>
+                            </form>
+                            <form method="GET" action="{% url 'sell_shares' company.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger mx-2">Sell</button>
+                            </form>
                         </div>
                     </td>
                 </tr>

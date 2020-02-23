@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light" style="background: #36D1DC;  /* fallback for old browsers */
+<nav class="navbar navbar-expand-lg navbar-light mb-2" style="background: #36D1DC;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to bottom, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to bottom, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 ">
-    <a class="navbar-brand" href="#">STOP STOCK</a>
+    <a class="navbar-brand" href="{% url 'user' %}"><b>STOP STOCK</b></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -28,13 +28,19 @@ background: linear-gradient(to bottom, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, 
             </div>
           </li>
         {% endif %}
-        <li class="nav-item">
-          {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'log_out' %}">Logout</a>
-          {% else %}
+          </li>
+        {% else %}
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'login' %}">Login</a>
-          {% endif %}
-        </li>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+        {% endif %}
+        
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search Company" aria-label="Search">

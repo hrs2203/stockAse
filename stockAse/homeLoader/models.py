@@ -28,7 +28,7 @@ class CustomUser(AbstractUser):
                               upload_to="profile_photos/", verbose_name="Profile Photo")
 
     def __str__(self):
-        return self.email
+        return self.first_name + " " + self.last_name
 
     class Meta:
         verbose_name = 'User'

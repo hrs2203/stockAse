@@ -11,41 +11,8 @@
 
 
 {% block content %}
-	<header>
-		{% include "includes/nav.html" %}
-	</header>
-
   <h2>Login</h2>
-
-  {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <p>{{ message }}</p>
-    </div>
-    {% endfor %}
-  {% endif %}
-
-    {% if form.errors %}
-      <div class="alert alert-danger" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <p>Your username and password didn't match. Please try again.</p>
-      </div>
-    {% endif %}
-    
-    {% if next %}
-      {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-      {% else %}
-        <p>Please login to see this page.</p>
-      {% endif %}
-    {% endif %}
-    
+      
     <div class="form_input">
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
