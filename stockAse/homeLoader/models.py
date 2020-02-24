@@ -70,8 +70,6 @@ class Shares(models.Model):
 
 
 class Transaction(models.Model):
-    transaction_id = models.CharField(
-        max_length=50, primary_key=True, unique=True, default=uuid.uuid4, verbose_name="ID")
     seller = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='Seller')
     buyer = models.ForeignKey(
@@ -80,7 +78,7 @@ class Transaction(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
     shares_count = models.IntegerField(
-        blank=False, verbose_name="Number of shares")
+        blank=False, verbose_name="Number of Shares to Purchase", default=0)
     time = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -10,10 +10,9 @@ h2 {
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
-p {
+marquee {
   font-weight: bold;
   text-align: center;
-  margin: 2%;
   background: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }

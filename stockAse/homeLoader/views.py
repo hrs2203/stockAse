@@ -9,8 +9,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 
-from .models import CustomUser, Company, Shares
-from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanySharesUpdateForm, SharesSaleUpdateForm
+from .models import CustomUser, Company, Shares, Transaction
+from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanySharesUpdateForm, SharesSaleUpdateForm, BuySharesUpdateForm
 
 
 def welcomePage(request):
@@ -90,6 +90,11 @@ class MarketView(generic.ListView):
             user=self.request.user).filter(shares_sale__gte=1)
         return shr
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['companies'] = Company.objects.all()
+        return context
+
 
 @login_required
 def userPage(request):
@@ -101,6 +106,46 @@ def userPage(request):
             "email_id": str(user),
         }
     )
+
+
+@login_required
+def startTransaction(request, id):
+    obj = get_object_or_404(Transaction, id=id)
+    form = BuySharesUpdateForm(request.POST or None, instance=obj)
+    shr = get_object_or_404(Shares, user=obj.seller, company=obj.company)
+    if form.is_valid():
+        form.save(commit=True)
+        return redirect(myShares)
+    return render(request, 'buy_share.html', {"form": form, "head": 'Sell My Shares', "transaction": obj, "share": shr})
+
+
+@login_required
+def makepayment(request, id):
+    obj = get_object_or_404(Transaction, id=id)
+    buyer_balance = obj.buyer.balance
+    qty = obj.shares_count
+    cost = obj.cost_price
+    if buyer_balance < (qty*cost):
+        # redirect to market
+        pass
+
+    # start payment
+
+    pass
+
+
+@login_required
+def buyShares(request, id):
+    obj = get_object_or_404(Shares, id=id)
+    new_transaction = Transaction(seller=obj.user, buyer=request.user,
+                                  status='Pending', company=obj.company, cost_price=obj.company.selling_price)
+    curr_balance = request.user.balance
+    if curr_balance < obj.company.selling_price:
+        messages.warning(
+            request, "You Don't Have Enough Balance!")
+        return MarketView.as_view()(request)
+    new_transaction.save()
+    return startTransaction(request, new_transaction.id)
 
 
 @login_required

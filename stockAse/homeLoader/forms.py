@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Company, Shares
+from .models import CustomUser, Company, Shares, Transaction
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -49,3 +49,10 @@ class SharesSaleUpdateForm(forms.ModelForm):
     class Meta:
         model = Shares
         fields = ('shares_sale',)
+
+
+class BuySharesUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Transaction
+        fields = ('shares_count',)

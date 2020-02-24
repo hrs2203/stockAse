@@ -18,6 +18,7 @@
                     <th>Company</th>
                     <th>Shares Count</th>
                     <th>Shares on Sale</th>
+                    <th>Cost</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
                     <td class="comp">{{ company.company.company_name }}</td>
                     <td>{{ company.shares_count }}</td> 
                     <td>{{ company.shares_sale }}</td>
+                    <td>₹ {{ company.company.selling_price }}</td>
                     <td>
                         <div class="row">
                             <form method="GET" action="{% url 'edit_shares' company.id %}">

@@ -10,16 +10,6 @@
 {% endblock %}
 
 {% block content %}
-    <div class='messages'>
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </div>
-
-    {% if form.errors %}
-        <p>Some error occured</p>
-    {% endif %}
-
     <h2>Register Your Company</h2>
     <div class="form_input">
       <form method="post" action="{% url 'new_company' %}">
