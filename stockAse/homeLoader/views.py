@@ -111,11 +111,12 @@ def userPage(request):
 @login_required
 def startTransaction(request, id):
     obj = get_object_or_404(Transaction, id=id)
-    form = BuySharesUpdateForm(request.POST or None, instance=obj)
     shr = get_object_or_404(Shares, user=obj.seller, company=obj.company)
-    if form.is_valid():
-        form.save(commit=True)
-        return redirect(myShares)
+    form = BuySharesUpdateForm(request.POST or None, instance=obj)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save(commit=True)
+            return render(request, 'payment_page.html', {"transaction": obj})
     return render(request, 'buy_share.html', {"form": form, "head": 'Sell My Shares', "transaction": obj, "share": shr})
 
 
@@ -125,13 +126,37 @@ def makepayment(request, id):
     buyer_balance = obj.buyer.balance
     qty = obj.shares_count
     cost = obj.cost_price
-    if buyer_balance < (qty*cost):
-        # redirect to market
-        pass
+    total = qty*cost
+    if buyer_balance < total:
+        # redirect to user shares
+        obj.status = "Failed"
+        messages.error(request, "Payment Failed due to Low Balance!")
+        return myShares(request)
 
     # start payment
-
-    pass
+    buyer = obj.buyer
+    seller = obj.seller
+    buyer.balance -= total
+    seller.balance += total
+    buyer.save()
+    seller.save()
+    seller_share = Shares.objects.filter(user=seller, company=obj.company)[0]
+    seller_share.shares_sale -= obj.shares_count
+    seller_share.shares_count -= obj.shares_count
+    seller_share.save()
+    if not not Shares.objects.filter(user=buyer, company=obj.company):
+        buyer_share = Shares.objects.filter(user=buyer, company=obj.company)
+        buyer_share = buyer_share[0]
+        buyer_share.shares_count += obj.shares_count
+        buyer_share.save()
+    else:
+        buyer_share = Shares(company=obj.company, user=buyer,
+                             shares_count=obj.shares_count)
+        buyer_share.save()
+    obj.status = "Success"
+    obj.save()
+    messages.success(request, "Payment Successfully Completed!")
+    return myShares(request)
 
 
 @login_required
