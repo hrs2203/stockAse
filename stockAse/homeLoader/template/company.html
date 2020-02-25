@@ -1,17 +1,27 @@
 {% extends './header.html' %}
 
-{% block title %} company {% endblock %}
+{% block title %} homepage {% endblock %}
 
 {% block customStyle %}
 
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" ></script>
+
 	{% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_company.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_comp.css' %}">
 
 {% endblock %}
 
 {% block content %}
-    <div class='test'>
-    </div>
+	<div class="row mt-2 ml-1 mr-1">
+		<div class="col-3 mt-2 sideBar">
+			{% include "includes/sideBar_company.html" %}
+		</div>
+		<div class="col m-2 contentBody">
+            {% include "includes/companyGraph.html" %}
+		</div>
+	</div>
 
-	
+	{% load static %}
+	<script src="{% static 'js/homeloader_sampleStockLoad.js' %}"></script>
 {% endblock %}

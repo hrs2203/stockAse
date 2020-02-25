@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
-
+from . import models
 
 class CustomUserAdmin(UserAdmin):
     add_from = CustomUserCreationForm
@@ -29,3 +29,11 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(models.Company)
+admin.site.register(models.Shares)
+admin.site.register(models.Transaction)
+admin.site.register(models.Events)
+
+
+
+
