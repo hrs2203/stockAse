@@ -12,7 +12,7 @@ urlpatterns = [
     path('company/shares/<int:id>', views.editCompanyShares, name='edit_shares'),
     path('user/shares/<int:id>', views.sellMyShares, name='sell_shares'),
     path('user/buy/shares/<int:id>', views.buyShares, name='buy_shares'),
-    path('user/payment/<int:id>', views.makepayment, name='payment'),
+    path('user/payment/<int:id>', views.simulateTransaction, name='payment'),
     path('user/payment/start/<int:id>',
          views.startTransaction, name='transaction'),
     path('market', views.market, name='market'),
@@ -20,6 +20,7 @@ urlpatterns = [
     path('user', views.userPage, name='user'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('user/companies', views.myCompanies, name='user_companies'),
+    path('user/transactions', views.myTransactions, name='user_transactions'),
     path('signup', views.signup, name='signup'),
     path('sample/test_data', views.send_testGraphData),
 ]

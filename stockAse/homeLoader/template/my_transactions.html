@@ -1,0 +1,52 @@
+{% extends './header.html' %}
+
+{% block title %} My Transactions {% endblock %}
+
+{% block customStyle %}
+
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_shares.css' %}">
+
+{% endblock %}
+
+{% block content %}
+    <h2>My Transactions</h2>
+    {% if my_transactions_list %}
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Company</th>
+                    <th>Cost</th>
+                    <th>Shares</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in my_transactions_list %}
+                <tr>
+                    <td>{{ transaction.time }}</td> 
+                    <td class="comp">{{ transaction.company.company_name }}</td>
+                    <td>₹ {{ transaction.cost_price }}</td>
+                    <td>{{ transaction.shares_count }}</td> 
+                    {% ifequal user transaction.buyer %}
+                        <td class="text-danger">- ₹ {{ transaction.total_amount }}</td>
+                    {% else %}
+                        <td class="text-success">+ ₹ {{ transaction.total_amount }}</td>
+                    {% endifequal %}
+                    {% ifequal "Failed" transaction.status %}
+                        <td class="text-danger">{{ transaction.status }}</td>
+                    {% else %}
+                        <td class="text-success">{{ transaction.status }}</td>
+                    {% endifequal %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p><marquee>Times ticking!!! Buy a new Share</marquee></p>
+    {% endif %}
+
+	
+{% endblock %}

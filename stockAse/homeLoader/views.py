@@ -8,6 +8,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views import generic
+from django.db import transaction
 
 from .models import CustomUser, Company, Shares, Transaction
 from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanySharesUpdateForm, SharesSaleUpdateForm, BuySharesUpdateForm
@@ -71,7 +72,7 @@ def log_out(request):
         logout(request)
         messages.success(request, "Logged out successfully!")
     else:
-        messages.warning(request, "You Are not Logged in")
+        messages.error(request, "You Are not Logged in")
     return redirect('/accounts/login')
 
 
@@ -104,6 +105,7 @@ def userPage(request):
         template_name='userDetail.html',
         context={
             "email_id": str(user),
+            "balance": user.balance
         }
     )
 
@@ -113,50 +115,87 @@ def startTransaction(request, id):
     obj = get_object_or_404(Transaction, id=id)
     shr = get_object_or_404(Shares, user=obj.seller, company=obj.company)
     form = BuySharesUpdateForm(request.POST or None, instance=obj)
-    if request.method == "POST":
-        if form.is_valid():
-            form.save(commit=True)
-            return render(request, 'payment_page.html', {"transaction": obj})
+    if request.method == "POST" and form.is_valid() and form.save(commit=False).shares_count <= shr.shares_count:
+        var = form.save(commit=False)
+        var.total_amount = var.shares_count*var.cost_price
+        var.save()
+        return render(request, 'payment_page.html', {"transaction": obj})
+    elif form.is_valid() and form.save(commit=False).shares_count > shr.shares_count:
+        print(shr.shares_count)
+        messages.error(request, "You cannot buy more than available")
     return render(request, 'buy_share.html', {"form": form, "head": 'Sell My Shares', "transaction": obj, "share": shr})
 
 
 @login_required
+@transaction.atomic
 def makepayment(request, id):
     obj = get_object_or_404(Transaction, id=id)
     buyer_balance = obj.buyer.balance
-    qty = obj.shares_count
-    cost = obj.cost_price
-    total = qty*cost
-    if buyer_balance < total:
-        # redirect to user shares
-        obj.status = "Failed"
-        messages.error(request, "Payment Failed due to Low Balance!")
-        return myShares(request)
+    if buyer_balance < obj.total_amount:
+        raise Exception("Payment Failed due to Low Balance!")
 
     # start payment
     buyer = obj.buyer
     seller = obj.seller
-    buyer.balance -= total
-    seller.balance += total
-    buyer.save()
-    seller.save()
+    buyer.balance -= obj.total_amount
+    seller.balance += obj.total_amount
     seller_share = Shares.objects.filter(user=seller, company=obj.company)[0]
     seller_share.shares_sale -= obj.shares_count
     seller_share.shares_count -= obj.shares_count
-    seller_share.save()
+    buyer_share = None
     if not not Shares.objects.filter(user=buyer, company=obj.company):
         buyer_share = Shares.objects.filter(user=buyer, company=obj.company)
         buyer_share = buyer_share[0]
         buyer_share.shares_count += obj.shares_count
-        buyer_share.save()
     else:
         buyer_share = Shares(company=obj.company, user=buyer,
                              shares_count=obj.shares_count)
+    try:
+        obj.status = "Success"
+        obj.save()
+        buyer.save()
+        seller.save()
+        seller_share.save()
         buyer_share.save()
-    obj.status = "Success"
-    obj.save()
-    messages.success(request, "Payment Successfully Completed!")
+    except Exception as e:
+        raise e
+
+
+@login_required
+def simulateTransaction(request, id):
+    obj = get_object_or_404(Transaction, id=id)
+    try:
+        makepayment(request, id)
+        messages.success(request, "Payment Successfully Completed")
+    except Exception as e:
+        obj.status = "Failed"
+        obj.total_amount = 0
+        obj.save()
+        messages.error(request, "Error: " + str(e))
     return myShares(request)
+
+
+@login_required
+def myTransactions(request):
+    return myTransactionsView.as_view()(request)
+
+
+class myTransactionsView(generic.ListView):
+    model = Transaction
+    context_object_name = 'my_transactions_list'
+    template_name = "my_transactions.html"
+
+    def get_queryset(self):
+        get_as_seller = Transaction.objects.filter(seller=self.request.user)
+        get_as_buyer = Transaction.objects.filter(buyer=self.request.user)
+        get_transactions = get_as_buyer | get_as_seller
+        get_transactions = get_transactions.order_by('-time')
+        return get_transactions
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
 
 
 @login_required
@@ -166,7 +205,7 @@ def buyShares(request, id):
                                   status='Pending', company=obj.company, cost_price=obj.company.selling_price)
     curr_balance = request.user.balance
     if curr_balance < obj.company.selling_price:
-        messages.warning(
+        messages.error(
             request, "You Don't Have Enough Balance!")
         return MarketView.as_view()(request)
     new_transaction.save()
@@ -190,7 +229,7 @@ def sellMyShares(request, id):
     if form.is_valid():
         print(obj.shares_sale)
         if obj.shares_count < obj.shares_sale:
-            messages.info(request, "Your currently own {} shares. The sale value cannot exceed it".format(
+            messages.error(request, "Your currently own {} shares. The sale value cannot exceed it".format(
                 obj.shares_count))
             return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})
         form.save(commit=True)

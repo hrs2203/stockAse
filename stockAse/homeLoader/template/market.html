@@ -12,7 +12,7 @@
 {% block content %}
     <h2>Market</h2>
     
-    <p><marquee scrollamount="15" overflow="hidden" onmouseover="this.stop();" onmouseout="this.start()"><b><i>Latest: </i></b>
+    <p><marquee scrollamount="15" onmouseover="this.stop();" onmouseout="this.start()"><b><i>Latest: </i></b>
     {% for company in companies %}
         {{ company.company_name }}: ₹{{ company.selling_price }} | 
     {% endfor %}

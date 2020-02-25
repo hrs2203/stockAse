@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import uuid
+from django.core.validators import ValidationError
 
 from .manager import CustomUserManager
 
@@ -30,6 +31,11 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+    def save(self, *args, **kwargs):
+        if self.balance < 0:
+            raise ValidationError("Low Balance")
+        super(CustomUser, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
@@ -50,6 +56,11 @@ class Company(models.Model):
     def __str__(self):
         return self.company_name
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.selling_price < 0:
+            raise ValidationError("Invalid Selling Price")
+        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+
     class Meta:
         verbose_name = 'Company'
         verbose_name_plural = 'Companies'
@@ -63,6 +74,13 @@ class Shares(models.Model):
         blank=False, verbose_name="Number of shares acquired")
     shares_sale = models.IntegerField(
         default=0, verbose_name="Number of shares on sale")
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.shares_count < 0:
+            raise ValidationError("Number of shares too low")
+        if self.shares_sale < 0 or self.shares_sale > self.shares_count:
+            raise ValidationError("Invalid Amount of Shares to sell")
+        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
     class Meta:
         verbose_name = 'Share'
@@ -82,6 +100,15 @@ class Transaction(models.Model):
     shares_count = models.IntegerField(
         blank=False, verbose_name="Number of Shares to Purchase", default=0)
     time = models.DateTimeField(auto_now_add=True)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.total_amount < 0 or self.cost_price < 0:
+            self.status = "Failed"
+            raise ValidationError("Invalid Amount")
+        if self.shares_count < 0:
+            self.status = "Failed"
+            raise ValidationError("Number of Shares cannot be negative")
+        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
     class Meta:
         verbose_name = 'Transaction'

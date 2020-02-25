@@ -1,6 +1,6 @@
 {% extends './header.html' %}
 
-{% block title %} company {% endblock %}
+{% block title %} User {% endblock %}
 
 {% block customStyle %}
 
@@ -12,6 +12,7 @@
 {% block content %}
     <div class='test'>
 		<h2 class="text-success">Welcome <i>{{ email_id }}</i>!</h2>
+		<p class="text-info">Balance <i>{{ balance }}</i></p>
     </div>
 	
 {% endblock %}
