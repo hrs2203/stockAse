@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     url(r'^log_out/$', views.log_out, name='log_out'),
-    path('', views.welcomePage),
+    path('', views.welcomePage, name='welcome'),
     path('company', views.companyPage),
     path('company/new', views.newCompany, name='new_company'),
     path('company/shares/<int:id>', views.editCompanyShares, name='edit_shares'),

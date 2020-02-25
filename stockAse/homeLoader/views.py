@@ -229,7 +229,7 @@ def sellMyShares(request, id):
     if form.is_valid():
         print(obj.shares_sale)
         if obj.shares_count < obj.shares_sale:
-            messages.error(request, "Your currently own {} shares. The sale value cannot exceed it".format(
+            messages.error(request, "Your currently own {0} shares. The sale value cannot exceed it".format(
                 obj.shares_count))
             return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})
         form.save(commit=True)
