@@ -1,0 +1,18 @@
+.sideBar {
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 800px;
+    overflow: auto;
+}
+.contentBody {
+    /* border: 1px solid black; */
+    max-height: 800px;
+    overflow: auto;
+}
+
+.homeDetailContent{
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 450px;
+    overflow: auto;
+}
