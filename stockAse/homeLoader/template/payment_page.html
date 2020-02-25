@@ -1,0 +1,45 @@
+{% extends 'header.html' %}
+
+{% block title %} Payment {% endblock %}
+
+{% block customStyle %}
+
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_form.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+    <h2>Payment</h2>
+    <div class="form_input">
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Company</th>
+                <td><b>{{ transaction.company.company_name }}</b></td>
+            </tr>
+            <tr>
+                <th>Seller</th>
+                <td>{{ transaction.seller.first_name }} {{ transaction.seller.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Cost</th>
+                <td>₹ {{ transaction.company.selling_price }}</td>
+            </tr>
+            <tr>
+                <th>Quanity</th>
+                <td>{{ transaction.shares_count }}</td>
+            </tr>
+            <tr>
+                <th>Total Amount</th>
+                <td>{{ transaction.total_amount }}</td>
+            </tr>
+        </table>
+      <form method="get" action="{% url 'payment' transaction.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" value="payment">Make Payment</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+    </div>
+	
+{% endblock %}

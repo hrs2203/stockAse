@@ -1,0 +1,18 @@
+.comp {
+  font-weight: bold;
+  font-style: italic;
+}
+
+h2 {
+  font-weight: bold;
+  text-align: center;
+  margin: 2%;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+marquee {
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(to right, #2980b9, #6dd5fa, #ffffff);
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}

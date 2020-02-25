@@ -1,0 +1,28 @@
+{% extends '../header.html' %}
+
+{% block title %} NEW {% endblock %}
+
+{% block customStyle %}
+
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_form.css' %}">
+
+{% endblock %}
+
+{% block content %}
+    <h2>Register Your Company</h2>
+    <div class="form_input">
+      <form method="post" action="{% url 'new_company' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_fieldName }}">{{ field.label }}</label>
+                <input type="{{ field.field.widget.input_type }}" placeholder="{{ field.help_text }}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="form-control">
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" value="register">Register</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+    </div>
+	
+{% endblock %}
