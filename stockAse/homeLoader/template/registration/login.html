@@ -11,6 +11,8 @@
 
 
 {% block content %}
+  <h2>Login</h2>
+
   {% if form.errors %}
       <div class="alert alert-danger" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -19,8 +21,6 @@
       <p>Incorrect email or password!</p>
       </div>
   {% endif %}
-
-  <h2>Login</h2>
       
   <div class="form_input">
     <form method="post" action="{% url 'login' %}">
