@@ -15,18 +15,20 @@ from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanyShare
 
 
 def welcomePage(request):
+    company_list = Company.objects.all()
     return render(
         request=request,
         template_name='homepage.html',
-        context={}
+        context={"company_list": company_list}
     )
 
 
-def companyPage(request):
+def companyPage(request, id):
+    obj = get_object_or_404(Company, id=id)
     return render(
         request=request,
         template_name='company.html',
-        context={}
+        context={"company": obj}
     )
 
 

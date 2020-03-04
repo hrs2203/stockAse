@@ -1,90 +1,22 @@
 <div>
-    <div class="card p-1 mt-2 mb-2">
-        <div class="card-header">Header</div>
-        <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
-            <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">show Detail</button>
-            <button class="col m-1 btn btn-outline-danger">show Offers</button>
+    {% if company_list %}
+        {% for company in company_list %}
+            <div class="card p-1 mt-2 mb-2">
+                <div class="card-header">{{ company.company_name }}</div>
+                <div class="card-body">
+                    <h6 class="card-title">Details</h6>
+                    <p class="card-text">{{ company.description }}</p>
+                    <div class='row'>
+                    <form method="GET" action="{% url 'company_page' company.id%}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn m-1 btn-outline-primary btn-block">Show Details</button>
+                    </form>
+                    {% comment %} <button class="btn m-1 btn-outline-danger">show Offers</button> {% endcomment %}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="card mt-2 mb-2" >
-        <div class="card-header">Header</div>
-        <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
-            <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">show Detail</button>
-            <button class="col m-1 btn btn-outline-danger">show Offers</button>
-            </div>
-        </div>
-    </div><div class="card mt-2 mb-2" >
-        <div class="card-header">Header</div>
-        <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
-            <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">show Detail</button>
-            <button class="col m-1 btn btn-outline-danger">show Offers</button>
-            </div>
-        </div>
-    </div><div class="card mt-2 mb-2" >
-        <div class="card-header">Header</div>
-        <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
-            <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">show Detail</button>
-            <button class="col m-1 btn btn-outline-danger">show Offers</button>
-            </div>
-        </div>
-    </div><div class="card mt-2 mb-2" >
-        <div class="card-header">Header</div>
-        <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
-            <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">show Detail</button>
-            <button class="col m-1 btn btn-outline-danger">show Offers</button>
-            </div>
-        </div>
-    </div><div class="card mt-2 mb-2" >
-        <div class="card-header">Header</div>
-        <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
-            <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">show Detail</button>
-            <button class="col m-1 btn btn-outline-danger">show Offers</button>
-            </div>
-        </div>
-    </div><div class="card mt-2 mb-2" >
-        <div class="card-header">Header</div>
-        <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
-            <p class="card-text">
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">show Detail</button>
-            <button class="col m-1 btn btn-outline-danger">show Offers</button>
-            </div>
-        </div>
-    </div>
-    
-    
+        {% endfor %}
+    {% else %}
+        <h4>No Companies Registered Yet. Come back later.<h4>
+    {% endif %}
 </div>

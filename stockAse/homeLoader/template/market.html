@@ -41,7 +41,7 @@
                         <form method="GET" action="{% url 'buy_shares' share.id%}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-success mx-2">Buy</button>
-                    </form>
+                        </form>
                         <form method="GET" action="#">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-primary mx-2">WishList</button>

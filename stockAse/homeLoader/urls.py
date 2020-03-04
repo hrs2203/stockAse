@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     path('', views.welcomePage, name="welcome"),
 
-    path('company', views.companyPage),
+    path('company/<int:id>', views.companyPage, name='company_page'),
     path('company/new', views.newCompany, name='new_company'),
     path('company/shares/<int:id>', views.editCompanyShares, name='edit_shares'),
 
