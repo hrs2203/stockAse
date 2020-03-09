@@ -6,40 +6,35 @@
     <div class="card p-1 mt-2 mb-2">
         <div class="card-header">Header</div>
         <div class="card-body">
-            <h6 class="card-title">Primary card title</h6>
+            <h6 class="card-title">Company Details</h6>
             <p class="card-text">
-                <table>
+                <table class="table table-hover table-borderless">
                     <tr>
-                        <td>company name</td>
-                        <td>----></td>
-                        <td>abc</td>
+                        <th>name</th>
+                        <td>{{ company.company_name }}</td>
                     </tr>
                     <tr>
-                        <td>company code</td>
-                        <td>----></td>
-                        <td>abc</td>
+                        <th>code</th>
+                        <td>{{ company.company_code }}</td>
                     </tr>
                     <tr>
-                        <td>company key</td>
-                        <td>----></td>
-                        <td>abc</td>
+                        <th>key</th>
+                        <td>{{ company.company_key }}</td>
                     </tr>
                     <tr>
-                        <td>company Owner</td>
-                        <td>----></td>
-                        <td>abc</td>
+                        <th>Owner</th>
+                        <td>{{ company.owner.first_name }} {{ company.owner.last_name }}</td>
                     </tr>
                     <tr>
-                        <td>company Details</td>
-                        <td>----></td>
-                        <td>abc</td>
+                        <th>Details</th>
+                        <td>{{ company.description }}</td>
                     </tr>
                     
                 </table>
             </p>
             <div class='row'>
-            <button class="col m-1 btn btn-outline-primary">btn 1</button>
-            <button class="col m-1 btn btn-outline-danger">btn 2</button>
+            <button class="col m-1 btn btn-outline-primary">Watchlist</button>
+            <button class="col m-1 btn btn-outline-success">Stocks</button>
             </div>
         </div>
     </div>

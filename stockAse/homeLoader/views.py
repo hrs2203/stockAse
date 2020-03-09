@@ -15,18 +15,20 @@ from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanyShare
 
 
 def welcomePage(request):
+    company_list = Company.objects.all()
     return render(
         request=request,
         template_name='homepage.html',
-        context={}
+        context={"company_list": company_list}
     )
 
 
-def companyPage(request):
+def companyPage(request, id):
+    obj = get_object_or_404(Company, id=id)
     return render(
         request=request,
         template_name='company.html',
-        context={}
+        context={"company": obj}
     )
 
 
@@ -74,6 +76,19 @@ def log_out(request):
     else:
         messages.error(request, "You Are not Logged in")
     return redirect('/accounts/login')
+
+
+def friendPage(request, id):
+    friend = get_object_or_404(CustomUser, id=id)
+    shr = Shares.objects.filter(user=friend, shares_sale__gte=1)
+    return render(
+        request=request,
+        template_name='friendDetail.html',
+        context={
+            "friend": friend,
+            "friend_sell_list": shr
+        }
+    )
 
 
 @login_required
@@ -229,7 +244,7 @@ def sellMyShares(request, id):
     if form.is_valid():
         print(obj.shares_sale)
         if obj.shares_count < obj.shares_sale:
-            messages.error(request, "Your currently own {} shares. The sale value cannot exceed it".format(
+            messages.error(request, "Your currently own {0} shares. The sale value cannot exceed it".format(
                 obj.shares_count))
             return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})
         form.save(commit=True)

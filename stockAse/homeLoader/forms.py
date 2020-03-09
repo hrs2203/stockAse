@@ -25,15 +25,21 @@ class CustomUserChangeForm(UserChangeForm):
 
 class CompanyRegistrationForm(forms.ModelForm):
 
-    company_name = forms.CharField(max_length=100, required=True, help_text="Company Name", widget=forms.TextInput(attrs={'type': 'text'}))
-    company_code = forms.CharField(max_length=100, required=True, help_text="Company Code", widget=forms.TextInput(attrs={'type': 'text'}))
-    company_key = forms.CharField(max_length=100, required=True, help_text="Company Key", widget=forms.TextInput(attrs={'type': 'text'}))
-    description = forms.CharField(max_length=200, required=True, help_text="Description", widget=forms.TextInput(attrs={'type': 'text'}))
-    selling_price = forms.DecimalField(required=True, help_text="Rs.", widget=forms.NumberInput(attrs={'type': 'number'}))
+    company_name = forms.CharField(
+        max_length=100, required=True, help_text="Company Name", widget=forms.TextInput(attrs={'type': 'text'}))
+    company_code = forms.CharField(
+        max_length=100, required=True, help_text="Company Code", widget=forms.TextInput(attrs={'type': 'text'}))
+    company_key = forms.CharField(max_length=100, required=True,
+                                  help_text="Company Key", widget=forms.TextInput(attrs={'type': 'text'}))
+    description = forms.CharField(max_length=200, required=True,
+                                  help_text="Description", widget=forms.TextInput(attrs={'type': 'text'}))
+    selling_price = forms.DecimalField(
+        required=True, help_text="Rs.", widget=forms.NumberInput(attrs={'type': 'number'}))
 
     class Meta:
         model = Company
-        fields = ('company_name', 'description', 'selling_price', )
+        fields = ('company_name', 'description', 'selling_price',
+                  'company_code', 'company_key', )
 
 
 class CompanySharesUpdateForm(forms.ModelForm):
