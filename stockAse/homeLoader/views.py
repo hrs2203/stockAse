@@ -290,7 +290,7 @@ def send_testGraphData(request):
     # print(temp.get("Meta Data"))
     stockData = temp.get("Time Series (5min)")
     # print(stockData)
-    countLim = 10
+    countLim = 50
     xData = list(stockData.keys())
 
     xTime = []
@@ -307,7 +307,7 @@ def send_testGraphData(request):
         y2Data.append(float(stockData.get(i).get("2. high")))
         y3Data.append(float(stockData.get(i).get("3. low")))
 
-    print(yData[:10])
+    print(yData[:countLim])
 
     # l = random.randint(1,30)
     # x = []
@@ -317,10 +317,10 @@ def send_testGraphData(request):
     # 	y.append(x[-1]**2)
 
     return JsonResponse({
-        "x_axis": xTime[:10],
-        "y_axis": yData[:10],
-        "y2_axis": y2Data[:10],
-        "y3_axis": y3Data[:10],
+        "x_axis": xTime[:countLim],
+        "y_axis": yData[:countLim],
+        "y2_axis": y2Data[:countLim],
+        "y3_axis": y3Data[:countLim],
     })
 
 def getCompLiveData(request, compCode, compKey):
@@ -331,7 +331,7 @@ def getCompLiveData(request, compCode, compKey):
 	# print(temp.get("Meta Data"))
 	stockData = temp.get("Time Series (5min)")
 	# print(stockData)
-	countLim = 10
+	countLim = 50
 	xData = list(stockData.keys())
 
 	xTime = []
@@ -348,7 +348,7 @@ def getCompLiveData(request, compCode, compKey):
 		y2Data.append(float(stockData.get(i).get("2. high")))
 		y3Data.append(float(stockData.get(i).get("3. low")))
 
-	print(yData[:10])
+	print(yData[:countLim])
 
 	# l = random.randint(1,30)
 	# x = []
@@ -358,8 +358,8 @@ def getCompLiveData(request, compCode, compKey):
 	# 	y.append(x[-1]**2)
 
 	return JsonResponse({
-		"x_axis": xTime[:10],
-		"y_axis": yData[:10],
-		"y2_axis": y2Data[:10],
-		"y3_axis": y3Data[:10],
+		"x_axis": xTime[:countLim],
+		"y_axis": yData[:countLim],
+		"y2_axis": y2Data[:countLim],
+		"y3_axis": y3Data[:countLim],
 	})

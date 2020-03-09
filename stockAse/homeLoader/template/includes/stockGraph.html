@@ -5,20 +5,47 @@
 	</div> -->
 
 	<div class="row">
-		<div class='col m-2' style="border: 1px solid black; border-radius: 5px ; padding: 3%;">
+		<div class='shadow rounded col m-2' style="padding: 3%;">
 			<canvas class='col' id="myChart">
 			</canvas>
-			<!-- <div class="container text-right">
-				<button id="clickChange" class='btn btn-outline-success align-self-center' style="margin-top: 20px" onclick="genLine();console.log('click')">refresh value</button>
-			</div> -->
+			<hr>
+			<div class="">
+				<button id="clickChange" class='btn btn-outline-success' style="width: 100%;" data-toggle="modal" data-target="#myModal">expandTab</button>
+			</div>
 		</div>
-		<div class='col m-2' style="border: 1px solid black; border-radius: 5px ; padding: 3%;">
+		<div class='shadow rounded col m-2' style="padding: 3%;">
 			<canvas class='col' id="myChart2">
 			</canvas>
-			<!-- <div class="container text-right">
-				<button id="clickChange" class='btn btn-outline-success align-self-center' style="margin-top: 20px" onclick="genLine2();console.log('click')">refresh value</button>
-			</div> -->
+			<hr>
+			<div class="">
+				<button id="clickChange" class='btn btn-outline-success' style="width: 100%;" data-toggle="modal" data-target="#myModal">expandTab</button>
+			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog modal-xl">
+		  <div class="modal-content">
+		  
+			<!-- Modal Header -->
+			<div class="modal-header">
+			  <h4 class="modal-title">Expanded Data</h4>
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			
+			<!-- Modal body -->
+			<div class="modal-body">
+				<canvas id="popBody" >
+				</canvas>
+			</div>
+			
+			<!-- Modal footer -->
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+			
+		  </div>
+		</div>
+	  </div>
 			
 </section>

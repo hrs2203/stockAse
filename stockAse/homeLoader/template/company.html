@@ -14,7 +14,7 @@
 
 {% block content %}
 	<div class="row mt-2 ml-1 mr-1">
-		<div class="col-3 mt-2 sideBar">
+		<div class="col-3 mt-2">
 			{% include "includes/sideBar_company.html" %}
 		</div>
 		<div class="col m-2 contentBody">
@@ -25,7 +25,7 @@
 	{% load static %}
 	<script src="{% static 'js/homeloader_sampleStockLoad.js' %}"></script>
 	<script>
-		genCompData( "{{ company.company_code }}","{{ company.company_key }}", "myChart"  )
-		genCompData( "{{ company.company_code }}","{{ company.company_key }}", "myChart2"  )
+		genCompData( "{{ company.company_code }}","{{ company.company_key }}", "myChart" )
+		genCompData( "{{ company.company_code }}","{{ company.company_key }}", "myChart2")
 	</script>
 {% endblock %}
