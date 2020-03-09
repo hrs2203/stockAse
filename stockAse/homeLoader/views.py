@@ -78,6 +78,19 @@ def log_out(request):
     return redirect('/accounts/login')
 
 
+def friendPage(request, id):
+    friend = get_object_or_404(CustomUser, id=id)
+    shr = Shares.objects.filter(user=friend, shares_sale__gte=1)
+    return render(
+        request=request,
+        template_name='friendDetail.html',
+        context={
+            "friend": friend,
+            "friend_sell_list": shr
+        }
+    )
+
+
 @login_required
 def market(request):
     return MarketView.as_view()(request)

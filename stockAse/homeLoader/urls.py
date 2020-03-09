@@ -20,6 +20,8 @@ urlpatterns = [
          views.startTransaction, name='transaction'),
     path('user/transactions', views.myTransactions, name='user_transactions'),
 
+    path('friend/<int:id>', views.friendPage, name='view_friend'),
+
     path('market', views.market, name='market'),
     path('shares', views.myShares, name='view_shares'),
     path('accounts/', include('django.contrib.auth.urls')),

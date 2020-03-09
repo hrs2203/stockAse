@@ -4,7 +4,7 @@
             <div class="card p-1 mt-2 mb-2">
                 <div class="card-header">{{ company.company_name }}</div>
                 <div class="card-body">
-                    <h6 class="card-title">Details</h6>
+                    {% comment %} <h6 class="card-title">Details</h6> {% endcomment %}
                     <p class="card-text">{{ company.description }}</p>
                     <div class='row'>
                     <form method="GET" action="{% url 'company_page' company.id%}">

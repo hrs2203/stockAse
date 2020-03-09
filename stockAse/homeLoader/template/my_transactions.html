@@ -27,7 +27,9 @@
                 {% for transaction in my_transactions_list %}
                 <tr>
                     <td>{{ transaction.time }}</td> 
-                    <td class="comp">{{ transaction.company.company_name }}</td>
+                    <td>
+                    <a class="nav-item" href="{% url 'company_page' transaction.company.id %}">{{ transaction.company.company_name }}</a>
+                </td>
                     <td>₹ {{ transaction.cost_price }}</td>
                     <td>{{ transaction.shares_count }}</td> 
                     {% ifequal user transaction.buyer %}

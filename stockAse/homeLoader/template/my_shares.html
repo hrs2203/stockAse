@@ -25,7 +25,9 @@
         <tbody>
             {% for share in my_shares_list %}
             <tr>
-                <td class="comp">{{ share.company.company_name }}</td>
+                <td>
+                    <a class="nav-item" href="{% url 'company_page' share.company.id %}">{{ share.company.company_name }}</a>
+                </td>
                 <td>{{ share.shares_count }}</td> 
                 <td>{{ share.shares_sale }}</td>
                 <td>₹ {{ share.company.selling_price }}</td>
