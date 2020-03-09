@@ -24,4 +24,8 @@
 
 	{% load static %}
 	<script src="{% static 'js/homeloader_sampleStockLoad.js' %}"></script>
+	<script>
+		genCompData( "{{ company.company_code }}","{{ company.company_key }}", "myChart"  )
+		genCompData( "{{ company.company_code }}","{{ company.company_key }}", "myChart2"  )
+	</script>
 {% endblock %}

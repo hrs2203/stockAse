@@ -322,3 +322,44 @@ def send_testGraphData(request):
         "y2_axis": y2Data[:10],
         "y3_axis": y3Data[:10],
     })
+
+def getCompLiveData(request, compCode, compKey):
+	print(compCode, compKey)
+	url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+compCode+"&interval=5min&apikey="+compKey
+	print(url)
+	temp = requests.get(url).json()
+	# print(temp.get("Meta Data"))
+	stockData = temp.get("Time Series (5min)")
+	# print(stockData)
+	countLim = 10
+	xData = list(stockData.keys())
+
+	xTime = []
+	for i in xData:
+		xTime.append(i.split()[1])
+
+	# print(xData[:countLim])
+	yData = []
+	y2Data = []
+	y3Data = []
+
+	for i in xData:
+		yData.append(float(stockData.get(i).get("1. open")))
+		y2Data.append(float(stockData.get(i).get("2. high")))
+		y3Data.append(float(stockData.get(i).get("3. low")))
+
+	print(yData[:10])
+
+	# l = random.randint(1,30)
+	# x = []
+	# y = []
+	# for i in range(l):
+	# 	x.append(random.randint(1,5))
+	# 	y.append(x[-1]**2)
+
+	return JsonResponse({
+		"x_axis": xTime[:10],
+		"y_axis": yData[:10],
+		"y2_axis": y2Data[:10],
+		"y3_axis": y3Data[:10],
+	})
