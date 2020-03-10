@@ -1,0 +1,54 @@
+{% extends './header.html' %}
+
+{% block title %} homepage {% endblock %}
+
+{% block customStyle %}
+	<!-- {% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_homepage.css' %}"> -->
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Company Table</h2>
+    <p>Type something in the input field to search the table for company names, last names or emails:</p>  
+    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <br>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Company Name</th>
+          <th>Owner Name</th>
+          <th>Detail</th>
+          <th>Selling Price</th>
+          <th>Go to site</th>
+          
+        </tr>
+      </thead>
+      <tbody id="myTable">
+        {% for comp in company_list %}
+            <tr>
+                <td> {{ comp.company_name }} </td>
+                <td> {{ comp.owner.first_name }} {{ comp.owner.last_name }} </td>
+                <td> {{ comp.description }} </td>
+                <td> {{ comp.selling_price }} </td>
+                <td> <a href="{% url 'company_page' comp.id%}">
+                    <button class="btn btn-outline-success" > Show Details {{ comp.company_name }} </button>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>    
+  </div>
+  
+  <script>
+  $(document).ready(function(){
+    $("#myInput").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+  </script>
+{% endblock %}

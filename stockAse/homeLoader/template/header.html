@@ -11,15 +11,19 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	{% block customStyle %} {% endblock %}
 
+	<style>
+
+	</style>
+
 </head>
 <body>
+	<header>
+		{% include "includes/nav.html" %}
+	</header>
 
 	<div style=" padding-left: 5%; padding-right: 5%;">
 
-		<header>
-			{% include "includes/nav.html" %}
-		</header>
-
+		
 			{% if form.errors %}
 				{% for field in form %}
 					{% for error in field.errors %}

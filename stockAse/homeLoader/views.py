@@ -363,3 +363,11 @@ def getCompLiveData(request, compCode, compKey):
 		"y2_axis": y2Data[:countLim],
 		"y3_axis": y3Data[:countLim],
 	})
+
+def exploreCompany(request):
+    allCompany = Company.objects.all()
+    return render(
+        request=request,
+        template_name='exploreCompany.html',
+        context={"company_list": allCompany}
+    )

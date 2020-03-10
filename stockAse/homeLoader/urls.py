@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^log_out/$', views.log_out, name='log_out'),
 
     path('sample/test_data', views.send_testGraphData),
-    path('company/data/<str:compCode>/<str:compKey>', views.getCompLiveData)
+    path('company/data/<str:compCode>/<str:compKey>', views.getCompLiveData),
+    path('exploreCompany', views.exploreCompany, name='exploreCompany'),
 ]
