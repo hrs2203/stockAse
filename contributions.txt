@@ -13,3 +13,5 @@ contribution made by each member of team 7
 Hrishabh pandey S20180010064 Contribution: maintained the frontend of application and created routes for real time load and display of stock market data for different company's
 
 - S20180010161 Shardul
+Roll No. S20180010161
+Sir i have done some research on the current state of the art on trading apps  and the functionalities they offer and also i have done all the things related to company model in backend and its functionalities along with Sumanth
