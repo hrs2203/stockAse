@@ -1,0 +1,15 @@
+## contribution made by each member of team 7
+
+#### S20180010001 Abhijit Prakash Patil
+
+
+#### S20180010050 Atharve Ramesh Dhabekar
+
+
+#### S20180010171 Sumant
+
+
+#### S20180010064 Hrishabh Pandey
+Hrishabh pandey S20180010064 Contribution: maintained the frontend of application and created routes for real time load and display of stock market data for different company's
+
+#### S20180010161 Shardul
