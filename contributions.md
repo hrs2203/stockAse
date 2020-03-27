@@ -9,6 +9,8 @@ using Django, I handled the transactions and its status that every user or compa
 
 
 #### S20180010171 Sumant
+S20180010171
+I mainly worked on designing the database schema and flow of the app. I have also added views and few functionalities to the company model. I have also created a few forms for different models.
 
 
 #### S20180010064 Hrishabh Pandey

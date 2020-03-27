@@ -8,6 +8,8 @@ I worked on registration and authentication of users. I also contributed in desi
 using Django, I handled the transactions and its status that every user or company performs and I also handled the shares part of our project.
 
 - S20180010171 Sumant
+S20180010171
+I mainly worked on designing the database schema and flow of the app. I have also added views and few functionalities to the company model. I have also created a few forms for different models.
 
 
 - S20180010064 Hrishabh Pandey
