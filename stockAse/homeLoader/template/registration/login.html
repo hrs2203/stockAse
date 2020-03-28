@@ -11,7 +11,7 @@
 
 
 {% block content %}
-  <h2>Login</h2>
+  
 
   {% if form.errors %}
       <div class="alert alert-danger" role="alert">
@@ -21,8 +21,10 @@
       <p>Incorrect email or password!</p>
       </div>
   {% endif %}
-      
-  <div class="form_input">
+
+  <div class="wBg p-4 shadow rounded form_input">
+    <h2>Login</h2>
+    <hr>
     <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
       <div class="form-group">
@@ -33,12 +35,14 @@
         <label for="InputPassword">Password</label>
         <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" class="form-control" placeholder="Password">
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Login</button>
+      <button type="submit" class="btn btn-success btn-block">Login</button>
       <input type="hidden" name="next" value="{{ next }}" />
     </form>
     
-    {# Assumes you setup the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+    <a href="{% url 'signup' %}"><button class="btn btn-outline-success">New User? Sign Up.</button></a>
+    <a href="{% url 'password_reset' %}"><button class="btn btn-outline-primary">Forgot password?</button></a>
+    <!-- {# Assumes you setup the password_reset view in your URLconf #} -->
+    <!-- <p><a href="{% url 'password_reset' %}">Forgot password?</a></p> -->
   </div>
 	
 {% endblock %}

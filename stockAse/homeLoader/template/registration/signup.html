@@ -11,9 +11,11 @@
 
 {% block content %}
 
-    <h2>Sign Up</h2>
     
-    <div class="form_input">
+    
+    <div class="wBg p-4 shadow rounded form_input">
+      <h2>Sign Up</h2>
+      <hr>
       <form method="post" action="{% url 'signup' %}">
         {% csrf_token %}
         {% for field in form %}
@@ -23,9 +25,10 @@
                 {{ field.help_text }}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        <button type="submit" class="btn btn-success btn-block">Submit</button>
         <input type="hidden" name="next" value="{{ next }}" />
       </form>
+      <a href="{% url 'login' %}"><button class="btn btn-outline-primary btn-block">Have an account? Login now.</button></a>
     </div>
 
 	

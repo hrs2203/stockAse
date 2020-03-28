@@ -110,21 +110,24 @@ var genCompData = (compCode,compKey, chartId) => $.ajax({
                         data: response.y_axis ,
                         backgroundColor: 'rgba(0,0,0,0)',
                         borderColor: 'rgba(0,125,255,1)',
-                        borderWidth: 1
+                        borderWidth: 1,
+                        pointRadius: 1
                     },
                     {
                         label: 'high -> ',
                         data: response.y2_axis ,
                         backgroundColor: 'rgba(0,0,0,0)',
                         borderColor: 'rgba(0,0,255,1)',
-                        borderWidth: 1
+                        borderWidth: 1,
+                        pointRadius: 1
                     },
                     {
                         label: 'low -> ',
                         data: response.y3_axis ,
                         backgroundColor: 'rgba(0,0,0,0)',
                         borderColor: 'rgba(250,0,0,1)',
-                        borderWidth: 1
+                        borderWidth: 1,
+                        pointRadius: 1
                     }
                 ]
             },
@@ -133,7 +136,7 @@ var genCompData = (compCode,compKey, chartId) => $.ajax({
                     yAxes: [{
                         ticks: {
                             min: (Math.min(...response.y3_axis)),
-                            max: Math.floor(Math.max(...response.y_axis)+1)
+                            max: Math.floor(Math.max(...response.y2_axis)+1)
                         }
                     }]
                 }
