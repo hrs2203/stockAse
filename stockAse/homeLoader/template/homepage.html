@@ -15,18 +15,6 @@
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_homepage.css' %}">
 
-	<!-- <style>
-		.sideBar {
-			border: 1px solid black;
-			height: 800px;
-			overflow: auto;
-		}
-		.contentBody {
-			border: 1px solid black;
-		}
-		
-	</style> -->
-
 {% endblock %}
 
 {% block content %}
@@ -44,7 +32,7 @@
 	<script src="{% static 'js/homeloader_sampleStockLoad.js' %}"></script>
 	<script>
 		genCompData( "MSFT","demo", "myChart")
-		genCompData( "MSFT","demo", "myChart2")
+		// genCompData( "MSFT","demo", "myChart2")
 		genCompData( "MSFT","demo", "popBody")
 	</script>
 {% endblock %}

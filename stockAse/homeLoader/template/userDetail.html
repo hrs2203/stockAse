@@ -7,12 +7,216 @@
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_user.css' %}">
 
+	<style>
+		section {
+			min-height: 800px;
+			/* border: 1px solid black; */
+		}
+
+		body {
+			background-image: url('./sample/samp5.jpg');
+			/* background-color: #523b7f; */
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-position: center center;
+		}
+
+		.contentBlock{
+			min-height: 200px;
+		}
+
+		.bgCmain{
+			background-color: #523b7f;
+		}
+
+		.bgW {
+			background-color: #fff;
+		}
+
+		.bgGray {
+			background-color: #f7f7fa;
+		}
+
+		.into {
+			/* border-radius: 10px; */
+			min-height: 1000px;
+			margin-left: 5%;
+			margin-right: 5%;
+			margin-bottom: 5%;
+
+		}
+
+		.headSty {
+			position: fixed;
+			z-index: 10;
+			width: 100%;
+			background-color: #0fd18d;
+			color: black;
+			font-family: sans-serif;
+		}
+
+		.myDetail{
+			border-radius: 10px;
+			max-height: 1000px;
+		}
+
+		.contentBody{
+			border-radius: 10px;
+			min-height: 400px;
+			font-family: 'Times New Roman', Times, serif;
+			font-size: x-large;
+		}
+
+	</style>
+
 {% endblock %}
 
 {% block content %}
-    <div class='test'>
-		<h2 class="text-success">Welcome <i>{{ email_id }}</i>!</h2>
-		<p class="text-info">Balance <i>{{ balance }}</i></p>
-    </div>
+    <div class='row'>
+			<!-- <h2 class="text-success">Welcome <i>{{ email_id }}</i>!</h2>
+			<p class="text-info">Balance <i>{{ balance }}</i></p>
+			</div> -->
+			<div class="col-3">
+			<div class="card shadow m-3">
+				<img src="{% static 'image/userImg.png'%}" class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">{{ email_id }}</h5>
+					<p class="card-text">General Intro to {{ email_id }}.</p>
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Current balance : {{ balance }}</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col">				
+			<div class="card bg-white shadow mt-3 mb-5">
+				<div class="card-header"> <h3> Companies owned </h3> </div>
+				<div class="card-body">
+					{% if my_companies_list %}
+					<table class="table table-striped table-hover">
+							<thead>
+									<tr>
+											<th>Company</th>
+											<th>Shares Count</th>
+											<th>Shares on Sale</th>
+											<th>Cost</th>
+											<th>Actions</th>
+									</tr>
+							</thead>
+							<tbody>
+									{% for company in my_companies_list %}
+									<tr>
+											<td>
+											<a class="nav-item" href="{% url 'company_page' company.company.id %}">{{ company.company.company_name }}</a>
+									</td>
+											<td>{{ company.shares_count }}</td> 
+											<td>{{ company.shares_sale }}</td>
+											<td>₹ {{ company.company.selling_price }}</td>
+											<td>
+													<div class="row">
+															<form method="GET" action="{% url 'edit_shares' company.id %}">
+																	{% csrf_token %}
+																	<button type="submit" class="btn btn-primary mx-2">Edit</button>
+															</form>
+															<form method="GET" action="{% url 'sell_shares' company.id %}">
+																	{% csrf_token %}
+																	<button type="submit" class="btn btn-danger mx-2">Sell</button>
+															</form>
+													</div>
+											</td>
+									</tr>
+							{% endfor %}
+							</tbody>
+					</table>
+			{% else %}
+					<p>No company owned</p>
+			{% endif %}
+				</div>
+			</div>
+
+			<div class="card bg-white shadow mt-3 mb-5">
+				<div class="card-header"> <h3> Shares owned </h3> </div>
+				<div class="card-body">
+					{% if my_shares_list %}
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Shares Count</th>
+                <th>Shares on Sale</th>
+                <th>Cost</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for share in my_shares_list %}
+            <tr>
+                <td>
+                    <a class="nav-item" href="{% url 'company_page' share.company.id %}">{{ share.company.company_name }}</a>
+                </td>
+                <td>{{ share.shares_count }}</td> 
+                <td>{{ share.shares_sale }}</td>
+                <td>₹ {{ share.company.selling_price }}</td>
+                <td>
+                    <form method="GET" action="{% url 'sell_shares' share.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Sell</button>
+                    </form>
+                </td>
+            </tr>
+					{% endfor %}
+					</tbody>
+			</table>
+			{% else %}
+					<p>No Shares owned</p>
+			{% endif %}
+				</div>
+			</div>
+
+			<div class="card bg-white shadow mt-3 mb-5">
+				<div class="card-header"> <h3> Transaction History </h3> </div>
+				<div class="card-body">
+					{% if my_transactions_list %}
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Company</th>
+                    <th>Cost</th>
+                    <th>Shares</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in my_transactions_list %}
+                <tr>
+                    <td>{{ transaction.time }}</td> 
+                    <td>
+                    <a class="nav-item" href="{% url 'company_page' transaction.company.id %}">{{ transaction.company.company_name }}</a>
+                </td>
+                    <td>₹ {{ transaction.cost_price }}</td>
+                    <td>{{ transaction.shares_count }}</td> 
+                    {% ifequal user transaction.buyer %}
+                        <td class="text-danger">- ₹ {{ transaction.total_amount }}</td>
+                    {% else %}
+                        <td class="text-success">+ ₹ {{ transaction.total_amount }}</td>
+                    {% endifequal %}
+                    {% ifequal "Failed" transaction.status %}
+                        <td class="text-danger">{{ transaction.status }}</td>
+                    {% else %}
+                        <td class="text-success">{{ transaction.status }}</td>
+                    {% endifequal %}
+                </tr>
+            {% endfor %}
+            </tbody>
+					</table>
+			{% else %}
+					<p>No transaction history available</p>
+			{% endif %}
+					</div>
+			</div>
+
+		</div>
 	
 {% endblock %}

@@ -138,6 +138,11 @@ var genCompData = (compCode,compKey, chartId) => $.ajax({
                             min: (Math.min(...response.y3_axis)),
                             max: Math.floor(Math.max(...response.y2_axis)+1)
                         }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: "rgba(0, 0, 0, 0)",
+                        }
                     }]
                 }
             }

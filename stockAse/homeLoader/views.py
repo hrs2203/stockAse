@@ -115,12 +115,21 @@ class MarketView(generic.ListView):
 @login_required
 def userPage(request):
     user = CustomUser.objects.get(email=request.user.email)
+    # cp = Company.objects.filter(owner=request.user)
+    shr = Shares.objects.filter(user=request.user)
+    get_as_seller = Transaction.objects.filter(seller=request.user)
+    get_as_buyer = Transaction.objects.filter(buyer=request.user)
+    get_transactions = get_as_buyer | get_as_seller
+
     return render(
         request=request,
         template_name='userDetail.html',
         context={
             "email_id": str(user),
-            "balance": user.balance
+            "balance": user.balance,
+            "my_shares_list" : shr,
+            # "my_companies_list" : cp,
+            "my_transactions_list" : get_transactions
         }
     )
 
