@@ -18,6 +18,9 @@
 {% endblock %}
 
 {% block content %}
+
+	<div class='row p-2 mt-2 ml-1 mr-1' style="border: 1px solid black; min-height: 500px;">
+	</div>
 	<div class="row mt-2 ml-1 mr-1">
 		<div class="col-3 mt-2 sideBar">
 			{% include "includes/sideBar.html" %}
@@ -26,6 +29,8 @@
 			{% include "includes/stockGraph.html" %}
 			<!-- {% include "includes/stockDetail.html" %} -->
 		</div>
+	</div>
+	<div class='row p-2 mt-2 ml-1 mr-1 mb-2' style="border: 1px solid black; min-height: 500px;">
 	</div>
 
 	{% load static %}

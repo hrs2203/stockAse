@@ -10,10 +10,10 @@
 {% block content %}
 <div class="container">
     <h2>Company Table</h2>
-    <p>Type something in the input field to search the table for company names, last names or emails:</p>  
+    <p>Type something in the input field to search the table for company names, Owner names or Detail:</p>  
     <input class="form-control" id="myInput" type="text" placeholder="Search..">
     <br>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped  shadow wBg">
       <thead>
         <tr>
           <th>Company Name</th>
@@ -32,7 +32,7 @@
                 <td> {{ comp.description }} </td>
                 <td> {{ comp.selling_price }} </td>
                 <td> <a href="{% url 'company_page' comp.id%}">
-                    <button class="btn btn-outline-success" > Show Details {{ comp.company_name }} </button>
+                    <button class="btn btn-primary btn-block" > Show Details {{ comp.company_name }} </button>
                     </a>
                 </td>
             </tr>

@@ -138,14 +138,13 @@
 				<div class="card-header"> <h3> Shares owned </h3> </div>
 				<div class="card-body">
 					{% if my_shares_list %}
-    <table class="table table-striped table-hover">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Company</th>
                 <th>Shares Count</th>
                 <th>Shares on Sale</th>
                 <th>Cost</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -157,12 +156,6 @@
                 <td>{{ share.shares_count }}</td> 
                 <td>{{ share.shares_sale }}</td>
                 <td>₹ {{ share.company.selling_price }}</td>
-                <td>
-                    <form method="GET" action="{% url 'sell_shares' share.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Sell</button>
-                    </form>
-                </td>
             </tr>
 					{% endfor %}
 					</tbody>

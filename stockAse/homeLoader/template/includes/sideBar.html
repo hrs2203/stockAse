@@ -1,7 +1,7 @@
 <div>
     {% if company_list %}
         {% for company in company_list %}
-            <div class="shadow rounded card p-1 mt-2 mb-2">
+            <!-- <div class="shadow rounded card p-1 mt-2 mb-2">
                 <div class="card-header">{{ company.company_name }}</div>
                 <div class="card-body">
                     {% comment %} <h6 class="card-title">Details</h6> {% endcomment %}
@@ -12,6 +12,19 @@
                         <button type="submit" class="btn m-1 btn-outline-primary btn-block">Show Details</button>
                     </form>
                     {% comment %} <button class="btn m-1 btn-outline-danger">show Offers</button> {% endcomment %}
+                    </div>
+                </div>
+            </div> -->
+            <div class="shadow rounded card p-1 mt-2 mb-2">
+                <!-- <div class="card-header">{{ company.company_name }}</div> -->
+                <div class="card-body">
+                    {% comment %} <h6 class="card-title">Details</h6> {% endcomment %}
+                    <div class='row'>
+                        <h4 class="col-4 card-text text-center">{{ company.company_name }}</h4>
+                        <form class="col" method="GET" action="{% url 'company_page' company.id%}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary btn-block">Show Details</button>
+                        </form>
                     </div>
                 </div>
             </div>

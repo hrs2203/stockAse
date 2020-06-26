@@ -341,7 +341,8 @@ def getCompLiveData(request, compCode, compKey):
 	stockData = temp.get("Time Series (5min)")
 	# print(stockData)
 	countLim = 50
-	xData = list(stockData.keys())
+	xData = list(stockData.keys())[:countLim]
+	xData.reverse()
 
 	xTime = []
 	for i in xData:
@@ -356,8 +357,6 @@ def getCompLiveData(request, compCode, compKey):
 		yData.append(float(stockData.get(i).get("1. open")))
 		y2Data.append(float(stockData.get(i).get("2. high")))
 		y3Data.append(float(stockData.get(i).get("3. low")))
-
-	print(yData[:countLim])
 
 	# l = random.randint(1,30)
 	# x = []
