@@ -435,10 +435,10 @@ def getCachedCompanyStockData(request, compCode, compKey):
     cachedResult = CachedStockData.objects.filter( companyCode=compCode )
 
     return JsonResponse({
-        "marketTime": [ item.marketTime for item in cachedResult ],
-        "openPrice": [ item.openPrice for item in cachedResult ],
-        "hingPrice": [ item.highPrice for item in cachedResult ],
-        "lowPrice": [ item.lowPrice for item in cachedResult ],
+        "x_axis": [ item.marketTime for item in cachedResult ],
+        "y_axis": [ item.openPrice for item in cachedResult ],
+        "y2_axis": [ item.highPrice for item in cachedResult ],
+        "y3_axis": [ item.lowPrice for item in cachedResult ],
     })
 
 def exploreCompany(request):

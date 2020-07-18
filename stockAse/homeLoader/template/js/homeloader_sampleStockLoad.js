@@ -96,7 +96,8 @@
 
 var genCompData = (compCode,compKey, chartId) => $.ajax({
     type: "get",
-    url: `/company/data/${compCode}/${compKey}`,
+    // url: `/company/data/${compCode}/${compKey}`,
+    url: `/company/cached_data/${compCode}/${compKey}`,
     success: (response) => {
         // console.log(response)
         var ctx = document.getElementById(chartId).getContext('2d');
