@@ -33,6 +33,7 @@ admin.site.register(models.Company)
 admin.site.register(models.Shares)
 admin.site.register(models.Transaction)
 admin.site.register(models.Events)
+admin.site.register(models.CachedStockData)
 
 
 

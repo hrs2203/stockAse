@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
-import random
-import requests
+import random,requests
+from datetime import datetime
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404
@@ -9,8 +9,9 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.db import transaction
+from django.utils import timezone
 
-from .models import CustomUser, Company, Shares, Transaction
+from .models import *
 from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanySharesUpdateForm, SharesSaleUpdateForm, BuySharesUpdateForm
 
 
@@ -127,9 +128,9 @@ def userPage(request):
         context={
             "email_id": str(user),
             "balance": user.balance,
-            "my_shares_list" : shr,
+            "my_shares_list": shr,
             # "my_companies_list" : cp,
-            "my_transactions_list" : get_transactions
+            "my_transactions_list": get_transactions
         }
     )
 
@@ -371,6 +372,74 @@ def getCompLiveData(request, compCode, compKey):
 		"y2_axis": y2Data[:countLim],
 		"y3_axis": y3Data[:countLim],
 	})
+
+
+def getCachedCompanyStockData(request, compCode, compKey):
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={compCode}&interval=5min&apikey={compKey}"
+
+    needNewLoad = False
+    createNewObject = False
+    # check data last data instance in db
+    cachedResult = CachedStockData.objects.filter( companyCode=compCode )
+    currentTime = timezone.now()
+    print(currentTime)
+    if ( (cachedResult.count() == 0) or ( (currentTime-cachedResult[0].cacheTime).seconds > 300 )):
+        needNewLoad = True
+        if ( cachedResult.count() == 0 ):
+            createNewObject = True
+
+    # if instance timeStamp > 300sec -> load new data
+    if needNewLoad:
+        print("loading new data")
+        temp = requests.get(url).json()
+        stockData = temp.get("Time Series (5min)")
+
+        countLim = 50
+        xData = list(stockData.keys())[:countLim]
+        xData.reverse()
+
+        marketTime = [i.split()[1] for i in xData]
+
+        openPrice = [float(stockData.get(i).get("1. open")) for i in xData]
+        highPrice = [float(stockData.get(i).get("2. high")) for i in xData]
+        lowPrice = [float(stockData.get(i).get("3. low")) for i in xData]
+
+        # openPrice = [0 for i in xData]
+        # highPrice = [0 for i in xData]
+        # lowPrice = [0 for i in xData]
+
+        # save loaded data
+        if (createNewObject == True):
+            print("Printing New Response")
+            for i in range(countLim):
+                newStockVal = CachedStockData(
+                    cacheTime=currentTime,companyCode=compCode,marketTime=marketTime[i],
+                    openPrice=openPrice[i],highPrice=highPrice[i],lowPrice=lowPrice[i]
+                )
+                newStockVal.save()
+        else:
+            print("Printing newly Cached Response")
+            for i in range(countLim):
+                tempObj = cachedResult[i]
+                tempObj.cacheTime = currentTime
+                tempObj.companyCode = compCode
+                tempObj.marketTime = marketTime[i]
+                tempObj.openPrice = openPrice[i]
+                tempObj.highPrice = highPrice[i]
+                tempObj.lowPrice = lowPrice[i]
+                tempObj.save()
+                # print(marketTime[i],openPrice[i],highPrice[i],lowPrice[i])
+
+
+    # return json response from models in db
+    cachedResult = CachedStockData.objects.filter( companyCode=compCode )
+
+    return JsonResponse({
+        "marketTime": [ item.marketTime for item in cachedResult ],
+        "openPrice": [ item.openPrice for item in cachedResult ],
+        "hingPrice": [ item.highPrice for item in cachedResult ],
+        "lowPrice": [ item.lowPrice for item in cachedResult ],
+    })
 
 def exploreCompany(request):
     allCompany = Company.objects.all()

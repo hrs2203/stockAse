@@ -127,3 +127,17 @@ class Events(models.Model):
     class Meta:
         verbose_name = 'Event'
         verbose_name_plural = 'Events'
+
+
+class CachedStockData(models.Model):
+    cacheTime = models.DateTimeField()
+    companyCode = models.CharField(max_length=50, verbose_name="Code")
+    marketTime = models.TimeField()
+    openPrice = models.DecimalField(max_digits=10, decimal_places=2)
+    highPrice = models.DecimalField(max_digits=10, decimal_places=2)
+    lowPrice = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        verbose_name = "CachedStockData"
+        verbose_name_plural = "CachedStockData"
+

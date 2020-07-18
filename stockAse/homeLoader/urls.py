@@ -30,5 +30,6 @@ urlpatterns = [
 
     path('sample/test_data', views.send_testGraphData),
     path('company/data/<str:compCode>/<str:compKey>', views.getCompLiveData),
+    path('company/cached_data/<str:compCode>/<str:compKey>', views.getCachedCompanyStockData),
     path('exploreCompany', views.exploreCompany, name='exploreCompany'),
 ]
