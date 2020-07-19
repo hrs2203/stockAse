@@ -19,6 +19,11 @@ urlpatterns = [
     path('user/payment/start/<int:id>',
          views.startTransaction, name='transaction'),
     path('user/transactions', views.myTransactions, name='user_transactions'),
+    path('user/wishlist/', views.myWishList, name='wish_list'),
+    path('user/wishlist/add/<int:id>',
+         views.addToWishList, name='add_to_wish_list'),
+    path('user/wishlist/remove/<int:id>',
+         views.removeFromWishList, name='remove_from_wish_list'),
 
     path('friend/<int:id>', views.friendPage, name='view_friend'),
 
@@ -30,6 +35,7 @@ urlpatterns = [
 
     path('sample/test_data', views.send_testGraphData),
     path('company/data/<str:compCode>/<str:compKey>', views.getCompLiveData),
-    path('company/cached_data/<str:compCode>/<str:compKey>', views.getCachedCompanyStockData),
+    path('company/cached_data/<str:compCode>/<str:compKey>',
+         views.getCachedCompanyStockData),
     path('exploreCompany', views.exploreCompany, name='exploreCompany'),
 ]

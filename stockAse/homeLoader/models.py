@@ -129,6 +129,15 @@ class Events(models.Model):
         verbose_name_plural = 'Events'
 
 
+class WishList(models.Model):
+    buyer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    share = models.ForeignKey(Shares, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Wish List'
+        verbose_name_plural = 'Wish Lists'
+
+
 class CachedStockData(models.Model):
     cacheTime = models.DateTimeField()
     companyCode = models.CharField(max_length=50, verbose_name="Code")
@@ -140,4 +149,3 @@ class CachedStockData(models.Model):
     class Meta:
         verbose_name = "CachedStockData"
         verbose_name_plural = "CachedStockData"
-

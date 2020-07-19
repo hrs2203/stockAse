@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
-import random,requests
+import random
+import requests
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.http import JsonResponse
@@ -121,7 +122,6 @@ def userPage(request):
     get_as_seller = Transaction.objects.filter(seller=request.user)
     get_as_buyer = Transaction.objects.filter(buyer=request.user)
     get_transactions = get_as_buyer | get_as_seller
-
     return render(
         request=request,
         template_name='userDetail.html',
@@ -129,7 +129,6 @@ def userPage(request):
             "email_id": str(user),
             "balance": user.balance,
             "my_shares_list": shr,
-            # "my_companies_list" : cp,
             "my_transactions_list": get_transactions
         }
     )
@@ -142,7 +141,7 @@ def startTransaction(request, id):
     form = BuySharesUpdateForm(request.POST or None, instance=obj)
     if request.method == "POST" and form.is_valid() and form.save(commit=False).shares_count <= shr.shares_count:
         var = form.save(commit=False)
-        var.total_amount = var.shares_count*var.cost_price
+        var.total_amount = var.shares_count * var.cost_price
         var.save()
         return render(request, 'payment_page.html', {"transaction": obj})
     elif form.is_valid() and form.save(commit=False).shares_count > shr.shares_count:
@@ -244,6 +243,8 @@ def editCompanyShares(request, id):
     if form.is_valid():
         form.save(commit=True)
         return redirect(myCompanies)
+    form = CompanySharesUpdateForm(
+        initial={'shares_count': obj.shares_count, 'price': obj.company.selling_price})
     return render(request, 'registration/gen_form.html', {"form": form, "head": 'Edit Company Shares', "redirect": 'edit_shares', "id": id})
 
 
@@ -251,14 +252,13 @@ def editCompanyShares(request, id):
 def sellMyShares(request, id):
     obj = get_object_or_404(Shares, id=id)
     form = SharesSaleUpdateForm(request.POST or None, instance=obj)
-    if form.is_valid():
-        print(obj.shares_sale)
-        if obj.shares_count < obj.shares_sale:
-            messages.error(request, "Your currently own {0} shares. The sale value cannot exceed it".format(
-                obj.shares_count))
-            return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})
+    if form.is_valid() and obj.shares_count >= obj.shares_sale:
         form.save(commit=True)
         return redirect(myShares)
+    form = SharesSaleUpdateForm(initial={'shares_sale': obj.shares_sale})
+    if obj.shares_count < obj.shares_sale:
+        messages.error(request, "Your currently own {0} shares. The sale value cannot exceed it".format(
+            obj.shares_count))
     return render(request, 'registration/gen_form.html', {"form": form, "head": 'Sell My Shares', "redirect": 'sell_shares', "id": id})
 
 
@@ -291,6 +291,48 @@ class mySharesView(generic.ListView):
     def get_queryset(self):
         shr = Shares.objects.filter(user=self.request.user)
         return shr
+
+
+class myWishListView(generic.ListView):
+    model = WishList
+    context_object_name = 'my_wish_list'
+    template_name = 'my_wishlist.html'
+
+    def get_queryset(self):
+        obj = WishList.objects.filter(buyer=self.request.user)
+        return obj
+
+
+@login_required
+def myWishList(request):
+    return myWishListView.as_view()(request)
+
+
+@login_required
+def addToWishList(request, id):
+    shares_obj = Shares.objects.get(id=id)
+    queryset = WishList.objects.filter(buyer=request.user, share=shares_obj)
+    if len(queryset) > 0:
+        messages.error(request, "This share already exists in your wishlist")
+    else:
+        wish = WishList(share=shares_obj, buyer=request.user)
+        wish.save()
+        messages.success(request, "Successfully added share to your WishList")
+    # This redirects it to the same page
+    return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def removeFromWishList(request, id):
+    shares_obj = Shares.objects.get(id=id)
+    queryset = WishList.objects.filter(buyer=request.user, share=shares_obj)
+    if len(queryset) == 0:
+        messages.error(request, "No such wish found in your wishlist")
+    else:
+        instance = WishList.objects.get(buyer=request.user, share=shares_obj)
+        instance.delete()
+    # This redirects it to the same page
+    return redirect(request.META['HTTP_REFERER'])
 
 
 def send_testGraphData(request):
@@ -333,45 +375,47 @@ def send_testGraphData(request):
         "y3_axis": y3Data[:countLim],
     })
 
+
 def getCompLiveData(request, compCode, compKey):
-	print(compCode, compKey)
-	url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+compCode+"&interval=5min&apikey="+compKey
-	print(url)
-	temp = requests.get(url).json()
-	# print(temp.get("Meta Data"))
-	stockData = temp.get("Time Series (5min)")
-	# print(stockData)
-	countLim = 50
-	xData = list(stockData.keys())[:countLim]
-	xData.reverse()
+    print(compCode, compKey)
+    url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + \
+        compCode + "&interval=5min&apikey=" + compKey
+    print(url)
+    temp = requests.get(url).json()
+    # print(temp.get("Meta Data"))
+    stockData = temp.get("Time Series (5min)")
+    # print(stockData)
+    countLim = 50
+    xData = list(stockData.keys())[:countLim]
+    xData.reverse()
 
-	xTime = []
-	for i in xData:
-		xTime.append(i.split()[1])
+    xTime = []
+    for i in xData:
+        xTime.append(i.split()[1])
 
-	# print(xData[:countLim])
-	yData = []
-	y2Data = []
-	y3Data = []
+    # print(xData[:countLim])
+    yData = []
+    y2Data = []
+    y3Data = []
 
-	for i in xData:
-		yData.append(float(stockData.get(i).get("1. open")))
-		y2Data.append(float(stockData.get(i).get("2. high")))
-		y3Data.append(float(stockData.get(i).get("3. low")))
+    for i in xData:
+        yData.append(float(stockData.get(i).get("1. open")))
+        y2Data.append(float(stockData.get(i).get("2. high")))
+        y3Data.append(float(stockData.get(i).get("3. low")))
 
-	# l = random.randint(1,30)
-	# x = []
-	# y = []
-	# for i in range(l):
-	# 	x.append(random.randint(1,5))
-	# 	y.append(x[-1]**2)
+    # l = random.randint(1,30)
+    # x = []
+    # y = []
+    # for i in range(l):
+    # 	x.append(random.randint(1,5))
+    # 	y.append(x[-1]**2)
 
-	return JsonResponse({
-		"x_axis": xTime[:countLim],
-		"y_axis": yData[:countLim],
-		"y2_axis": y2Data[:countLim],
-		"y3_axis": y3Data[:countLim],
-	})
+    return JsonResponse({
+        "x_axis": xTime[:countLim],
+        "y_axis": yData[:countLim],
+        "y2_axis": y2Data[:countLim],
+        "y3_axis": y3Data[:countLim],
+    })
 
 
 def getCachedCompanyStockData(request, compCode, compKey):
@@ -380,12 +424,12 @@ def getCachedCompanyStockData(request, compCode, compKey):
     needNewLoad = False
     createNewObject = False
     # check data last data instance in db
-    cachedResult = CachedStockData.objects.filter( companyCode=compCode )
+    cachedResult = CachedStockData.objects.filter(companyCode=compCode)
     currentTime = timezone.now()
     print(currentTime)
-    if ( (cachedResult.count() == 0) or ( (currentTime-cachedResult[0].cacheTime).seconds > 300 )):
+    if ((cachedResult.count() == 0) or ((currentTime - cachedResult[0].cacheTime).seconds > 300)):
         needNewLoad = True
-        if ( cachedResult.count() == 0 ):
+        if (cachedResult.count() == 0):
             createNewObject = True
 
     # if instance timeStamp > 300sec -> load new data
@@ -413,8 +457,8 @@ def getCachedCompanyStockData(request, compCode, compKey):
             print("Printing New Response")
             for i in range(countLim):
                 newStockVal = CachedStockData(
-                    cacheTime=currentTime,companyCode=compCode,marketTime=marketTime[i],
-                    openPrice=openPrice[i],highPrice=highPrice[i],lowPrice=lowPrice[i]
+                    cacheTime=currentTime, companyCode=compCode, marketTime=marketTime[i],
+                    openPrice=openPrice[i], highPrice=highPrice[i], lowPrice=lowPrice[i]
                 )
                 newStockVal.save()
         else:
@@ -430,16 +474,16 @@ def getCachedCompanyStockData(request, compCode, compKey):
                 tempObj.save()
                 # print(marketTime[i],openPrice[i],highPrice[i],lowPrice[i])
 
-
     # return json response from models in db
-    cachedResult = CachedStockData.objects.filter( companyCode=compCode )
+    cachedResult = CachedStockData.objects.filter(companyCode=compCode)
 
     return JsonResponse({
-        "x_axis": [ item.marketTime for item in cachedResult ],
-        "y_axis": [ item.openPrice for item in cachedResult ],
-        "y2_axis": [ item.highPrice for item in cachedResult ],
-        "y3_axis": [ item.lowPrice for item in cachedResult ],
+        "x_axis": [item.marketTime for item in cachedResult],
+        "y_axis": [item.openPrice for item in cachedResult],
+        "y2_axis": [item.highPrice for item in cachedResult],
+        "y3_axis": [item.lowPrice for item in cachedResult],
     })
+
 
 def exploreCompany(request):
     allCompany = Company.objects.all()
