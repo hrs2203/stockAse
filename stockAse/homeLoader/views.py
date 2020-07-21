@@ -14,6 +14,7 @@ from django.utils import timezone
 
 from .models import *
 from .forms import CustomUserCreationForm, CompanyRegistrationForm, CompanySharesUpdateForm, SharesSaleUpdateForm, BuySharesUpdateForm
+from .filters import SharesFilter
 
 
 def welcomePage(request):
@@ -95,23 +96,13 @@ def friendPage(request, id):
 
 @login_required
 def market(request):
-    return MarketView.as_view()(request)
-
-
-class MarketView(generic.ListView):
-    model = Shares
-    context_object_name = 'market_list'
-    template_name = "market.html"
-
-    def get_queryset(self):
-        shr = Shares.objects.exclude(
-            user=self.request.user).filter(shares_sale__gte=1)
-        return shr
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['companies'] = Company.objects.all()
-        return context
+    shares_list = Shares.objects.filter(shares_sale__gte=1)
+    shares_filter = SharesFilter(request.GET, queryset=shares_list)
+    context = {
+        'filter': shares_filter,
+        'companies': Company.objects.all(),
+    }
+    return render(request, 'market.html', context=context)
 
 
 @login_required

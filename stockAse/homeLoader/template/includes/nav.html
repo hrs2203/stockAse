@@ -31,7 +31,9 @@
           <a class="dropdown-item" href="{% url 'wish_list' %}">My Wishlist</a>
         </div>
       </li>
-      {% endif %}
+    </ul>
+    {% endif %}
+    <ul class="nav navbar-nav navbar-right">
       {% if user.is_authenticated %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'log_out' %}">Logout</a>
@@ -43,9 +45,10 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
       </li>
-      {% endif %}
-
     </ul>
+    {% endif %}
+
+
 
   </div>
 </nav>
