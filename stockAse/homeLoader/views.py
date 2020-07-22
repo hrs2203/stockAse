@@ -96,7 +96,8 @@ def friendPage(request, id):
 
 @login_required
 def market(request):
-    shares_list = Shares.objects.filter(shares_sale__gte=1)
+    shares_list = Shares.objects.filter(
+        shares_sale__gte=1).exclude(user=request.user).order_by('company__company_name')
     shares_filter = SharesFilter(request.GET, queryset=shares_list)
     context = {
         'filter': shares_filter,
