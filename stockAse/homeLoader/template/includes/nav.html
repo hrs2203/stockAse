@@ -1,48 +1,54 @@
 <nav class="shadow navbar navbar-expand-lg navbar-light mb-5 p-3 pl-5">
-    <a class="navbar-brand" href="{% url 'welcome' %}"><b>STOP STOCK</b></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'user' %}">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'exploreCompany' %}">Explore</a>
-        </li>
-        {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'market' %}">Market</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Menu
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{% url 'new_company' %}">Register Company</a>
-              <a class="dropdown-item" href="{% url 'user_companies' %}">My Companies</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'view_shares' %}">My Shares</a>
-              <a class="dropdown-item" href="{% url 'user_transactions' %}">My Transactions</a>
-            </div>
-          </li>
-        {% endif %}
-        {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'log_out' %}">Logout</a>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
-          </li>
-        {% endif %}
-        
-      </ul>
-      
-    </div>
-  </nav>
+  <a class="navbar-brand" href="{% url 'welcome' %}"><b>STOP STOCK</b></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'user' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'exploreCompany' %}">Explore</a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'market' %}">Market</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Menu
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'new_company' %}">Register Company</a>
+          <a class="dropdown-item" href="{% url 'user_companies' %}">My Companies</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'view_shares' %}">My Shares</a>
+          <a class="dropdown-item" href="{% url 'user_transactions' %}">My Transactions</a>
+          <a class="dropdown-item" href="{% url 'wish_list' %}">My Wishlist</a>
+        </div>
+      </li>
+    </ul>
+    {% endif %}
+    <ul class="nav navbar-nav navbar-right">
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'log_out' %}">Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+      </li>
+    </ul>
+    {% endif %}
+
+
+
+  </div>
+</nav>

@@ -51,7 +51,7 @@ class Company(models.Model):
     description = models.CharField(
         max_length=200, blank=True, verbose_name="Description")
     selling_price = models.DecimalField(
-        max_digits=10, decimal_places=2, verbose_name="Price")
+        max_digits=10, decimal_places=2, verbose_name="Selling Price")
 
     def __str__(self):
         return self.company_name
@@ -70,9 +70,9 @@ class Shares(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     shares_count = models.IntegerField(
-        blank=False, verbose_name="Number of shares acquired")
+        blank=False, verbose_name="shares acquired")
     shares_sale = models.IntegerField(
-        default=0, verbose_name="Number of shares on sale")
+        default=0, verbose_name="shares on sale")
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if self.shares_count < 0:
@@ -129,6 +129,15 @@ class Events(models.Model):
         verbose_name_plural = 'Events'
 
 
+class WishList(models.Model):
+    buyer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    share = models.ForeignKey(Shares, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Wish List'
+        verbose_name_plural = 'Wish Lists'
+
+
 class CachedStockData(models.Model):
     cacheTime = models.DateTimeField()
     companyCode = models.CharField(max_length=50, verbose_name="Code")
@@ -140,4 +149,3 @@ class CachedStockData(models.Model):
     class Meta:
         verbose_name = "CachedStockData"
         verbose_name_plural = "CachedStockData"
-

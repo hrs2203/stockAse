@@ -1,0 +1,57 @@
+{% extends './header.html' %}
+
+{% block title %} My Wish List {% endblock %}
+
+{% block customStyle %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/homeloader_shares.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<h2>My WishList</h2>
+{% if my_wish_list %}
+<table class="table table-striped table-hover shadow wBg">
+    <thead>
+        <tr>
+            <th>Company</th>
+            <th>Shares on Sale</th>
+            <th>Cost</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for wish in my_wish_list %}
+        <tr>
+            <td>
+                <a class="nav-item"
+                    href="{% url 'company_page' wish.share.company.id %}">{{ wish.share.company.company_name }}</a>
+            </td>
+            <td>{{ wish.share.shares_sale }}</td>
+            <td>₹ {{ wish.share.company.selling_price }}</td>
+            <td>
+                <div class="row">
+                    <form method="GET" action="{% url 'buy_shares' wish.share.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success mx-2">Buy</button>
+                    </form>
+                    <form method="GET" action="{% url 'remove_from_wish_list' wish.share.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger mx-2">Remove</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>
+    <marquee>Add a new share to wishlist</marquee>
+</p>
+{% endif %}
+
+
+
+{% endblock %}

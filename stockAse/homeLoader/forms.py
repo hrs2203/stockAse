@@ -44,9 +44,14 @@ class CompanyRegistrationForm(forms.ModelForm):
 
 class CompanySharesUpdateForm(forms.ModelForm):
 
+    price = forms.DecimalField()
+
     class Meta:
         model = Shares
-        fields = ('shares_count',)
+        fields = ('shares_count', 'price',)
+
+    def get_price(self, obj):
+        return obj.company.selling_price
 
 
 class SharesSaleUpdateForm(forms.ModelForm):
